@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ai Visual Craft By SEESEE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0A0B0E;
+    --panel:#101218;
+    --panel-line:#1E212B;
+    --ink:#E9EAEE;
+    --ink-dim:#8A8D9A;
+    --cyan:#3FF0D6;
+    --magenta:#FF3D8A;
+    --violet:#8B7BFF;
+    --yellow:#F2C230;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--magenta); color:#0A0B0E; }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .scope-bar{
+    height:3px;
+    width:100%;
+    background:linear-gradient(90deg, var(--cyan) 0%, var(--violet) 33%, var(--magenta) 66%, var(--yellow) 100%);
+    position:sticky; top:0; z-index:50;
+  }
+
+  nav{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:28px 6vw;
+    position:sticky; top:3px; z-index:40;
+    background:rgba(10,11,14,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--panel-line);
+  }
+  .logo{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+  }
+  .logo span{ color:var(--magenta); }
+  .tagline-nav{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    color:var(--ink-dim);
+    letter-spacing:0.08em;
+    display:none;
+  }
+  @media(min-width:640px){ .tagline-nav{ display:block; } }
+
+  .nav-cta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--ink);
+    text-decoration:none;
+    border:1px solid var(--panel-line);
+    padding:9px 18px;
+    border-radius:2px;
+    transition:border-color .2s, color .2s;
+  }
+  .nav-cta:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  .hero{
+    padding:9vw 6vw 6vw;
+    position:relative;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .timecode{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--cyan);
+    letter-spacing:0.08em;
+    margin-bottom:28px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .timecode::before{
+    content:'';
+    width:7px; height:7px; border-radius:50%;
+    background:var(--magenta);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.4rem, 6.4vw, 5.2rem);
+    line-height:1.02;
+    letter-spacing:-0.02em;
+    max-width:16ch;
+  }
+  h1 .accent{
+    background:linear-gradient(90deg, var(--cyan), var(--violet) 55%, var(--magenta));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    margin-top:28px;
+    max-width:52ch;
+    font-size:1.05rem;
+    line-height:1.6;
+    color:var(--ink-dim);
+  }
+  .hero-actions{
+    margin-top:44px;
+    display:flex; gap:16px; flex-wrap:wrap; align-items:center;
+  }
+  .btn-primary{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    background:var(--ink);
+    color:var(--black);
+    padding:15px 26px;
+    text-decoration:none;
+    border-radius:2px;
+    font-weight:500;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(63,240,214,0.15); }
+  .btn-ghost{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    color:var(--ink-dim);
+    text-decoration:none;
+    border-bottom:1px solid var(--panel-line);
+    padding-bottom:2px;
+    transition:color .2s, border-color .2s;
+  }
+  .btn-ghost:hover{ color:var(--ink); border-color:var(--ink); }
+
+  .waveform{
+    display:flex; align-items:flex-end; gap:3px;
+    height:44px;
+    padding:0 6vw;
+    margin:0;
+    overflow:hidden;
+  }
+  .waveform span{
+    flex:1;
+    background:var(--panel-line);
+    min-width:1px;
+  }
+
+  .services{ padding:5vw 6vw 6vw; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:40px; flex-wrap:wrap; gap:16px;
+    border-bottom:1px solid var(--panel-line);
+    padding-bottom:20px;
+  }
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(1.6rem, 3vw, 2.2rem);
+    font-weight:600;
+  }
+  .section-head .mono{ color:var(--ink-dim); font-size:0.75rem; }
+
+  .reel{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:1px;
+    background:var(--panel-line);
+    border:1px solid var(--panel-line);
+  }
+  .clip{
+    background:var(--panel);
+    padding:32px 28px;
+    position:relative;
+    transition:background .25s ease;
+  }
+  .clip:hover{ background:#14161F; }
+  .clip .tc{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    color:var(--ink-dim);
+    margin-bottom:22px;
+    display:flex; justify-content:space-between;
+  }
+  .clip .tc .dot{ color:var(--cyan); }
+  .clip h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.2rem;
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .clip p{
+    color:var(--ink-dim);
+    font-size:0.92rem;
+    line-height:1.55;
+  }
+  .clip .bar{
+    height:2px; width:36px;
+    margin-top:22px;
+    background:var(--cyan);
+    transition:width .25s ease;
+  }
+  .clip:hover .bar{ width:64px; }
+  .clip:nth-child(1) .bar{ background:var(--cyan); }
+  .clip:nth-child(2) .bar{ background:var(--magenta); }
+  .clip:nth-child(3) .bar{ background:var(--violet); }
+  .clip:nth-child(4) .bar{ background:var(--yellow); }
+
+  .package{
+    margin:6vw; margin-top:0;
+    border:1px solid var(--panel-line);
+    background:linear-gradient(135deg, rgba(139,123,255,0.06), rgba(255,61,138,0.05));
+    padding:48px 6vw;
+    display:flex; justify-content:space-between; align-items:center; gap:32px;
+    flex-wrap:wrap;
+  }
+  .package h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(1.4rem, 2.6vw, 1.9rem);
+    max-width:24ch;
+    line-height:1.25;
+  }
+  .package .mono{ color:var(--violet); font-size:0.72rem; margin-bottom:14px; display:block; letter-spacing:0.08em; }
+  .package p{ color:var(--ink-dim); max-width:40ch; margin-top:10px; font-size:0.92rem; }
+
+  .contact{
+    padding:8vw 6vw 6vw;
+    text-align:left;
+    border-top:1px solid var(--panel-line);
+  }
+  .contact .mono.label{ color:var(--ink-dim); font-size:0.72rem; letter-spacing:0.08em; margin-bottom:18px; display:block; }
+  .contact h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:clamp(2rem, 5vw, 3.4rem);
+    font-weight:700;
+    max-width:18ch;
+    line-height:1.1;
+  }
+  .email-link{
+    margin-top:32px;
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(1rem, 2.2vw, 1.3rem);
+    color:var(--cyan);
+    text-decoration:none;
+    border-bottom:1px solid var(--cyan);
+    padding-bottom:4px;
+    transition:opacity .2s;
+  }
+  .email-link:hover{ opacity:0.7; }
+
+  footer{
+    padding:26px 6vw;
+    border-top:1px solid var(--panel-line);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    color:var(--ink-dim);
+    flex-wrap:wrap; gap:10px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  [data-reveal]{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  [data-reveal].in{
+    opacity:1;
+    transform:translateY(0);
+  }
+</style>
+</head>
+<body>
+
+  <div class="scope-bar"></div>
+
+  <nav>
+    <div class="logo">SEESEE<span>.</span></div>
+    <div class="tagline-nav mono">AI VISUAL CRAFT / STUDIO REEL</div>
+    <div style="display:flex; gap:10px;">
+      <a class="nav-cta" href="https://wa.me/260974809784" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="nav-cta" href="mailto:timmykhalil3@gmail.com">Email</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="timecode mono">00:00:01:04 — NOW RECORDING</div>
+    <h1>We craft <span class="accent">AI short films</span> and content that people actually believe.</h1>
+    <p class="hero-sub">Ai Visual Craft By SEESEE builds cinematic AI short films, realistic UGC, and high-converting AI ads — or teaches you to make them yourself. Pick your lane: hire us, or take the whole kit home.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://wa.me/260974809784" target="_blank" rel="noopener">Message on WhatsApp →</a>
+      <a class="btn-ghost" href="#services">See what we make</a>
+    </div>
+  </section>
+
+  <div class="waveform" id="waveform"></div>
+
+  <section class="services" id="services">
+    <div class="section-head">
+      <h2>What we make</h2>
+      <span class="mono">04 SERVICES / SEESEE STUDIO</span>
+    </div>
+    <div class="reel">
+      <div class="clip" data-reveal>
+        <div class="tc"><span>CLIP_01</span><span class="dot">●</span></div>
+        <h3>AI Short Film Making</h3>
+        <p>Full short films built with AI — concept, shots, pacing, sound design — produced start to finish for brands, artists, and storytellers.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="clip" data-reveal>
+        <div class="tc"><span>CLIP_02</span><span class="dot">●</span></div>
+        <h3>Realistic AI UGC</h3>
+        <p>Scroll-stopping, camera-real UGC content that doesn't look AI-generated — built to perform in feeds and ad accounts.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="clip" data-reveal>
+        <div class="tc"><span>CLIP_03</span><span class="dot">●</span></div>
+        <h3>AI Ad Teaching</h3>
+        <p>One-on-one coaching on building AI-powered ad creative — workflow, tools, prompts, and what actually converts.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="clip" data-reveal>
+        <div class="tc"><span>CLIP_04</span><span class="dot">●</span></div>
+        <h3>The Full Package</h3>
+        <p>Everything bundled — templates, tools, and training — so you can run AI short films, UGC, and ads entirely on your own.</p>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="reel-gallery" style="padding-top:0;">
+    <div class="section-head">
+      <h2>Recent reel</h2>
+      <span class="mono">SELECTS / WORK IN PROGRESS</span>
+    </div>
+    <div class="reel">
+      <div class="clip" data-reveal>
+        <div class="tc"><span>REEL_01</span><span class="dot">●</span></div>
+        <h3>Short film — placeholder</h3>
+        <p>Drop a thumbnail, title, and one line on the project here once you send over your best clips.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="clip" data-reveal>
+        <div class="tc"><span>REEL_02</span><span class="dot">●</span></div>
+        <h3>UGC ad — placeholder</h3>
+        <p>Swap this card for a real campaign example and the results it drove.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="clip" data-reveal>
+        <div class="tc"><span>REEL_03</span><span class="dot">●</span></div>
+        <h3>Client project — placeholder</h3>
+        <p>A third slot for whatever you're proudest of — swap in anytime.</p>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="package" data-reveal>
+    <div>
+      <span class="mono">DIY / SELF-SERVE</span>
+      <h3>Want to run it all yourself instead? Get the full package.</h3>
+      <p>One bundle, everything inside — the same systems we use, handed to you.</p>
+    </div>
+    <a class="btn-primary" href="mailto:timmykhalil3@gmail.com">Ask about the Package →</a>
+  </div>
+
+  <section class="contact">
+    <span class="mono label">GET IN TOUCH</span>
+    <h2>Tell us what you're building. We'll reply from the edit bay.</h2>
+    <a class="email-link" href="mailto:timmykhalil3@gmail.com">timmykhalil3@gmail.com</a>
+    <br>
+    <a class="email-link" href="https://wa.me/260974809784" target="_blank" rel="noopener" style="margin-top:14px; display:inline-block;">WhatsApp: +260 97 480 9784</a>
+  </section>
+
+  <footer>
+    <span>© 2026 Ai Visual Craft By SEESEE</span>
+    <span class="mono">CYAN·VIOLET·MAGENTA·YELLOW</span>
+  </footer>
+
+<script>
+  const wf = document.getElementById('waveform');
+  const barCount = 90;
+  for(let i=0;i<barCount;i++){
+    const bar = document.createElement('span');
+    const h = 6 + Math.sin(i*0.35) * 14 + Math.random()*10;
+    bar.style.height = Math.max(4, h) + 'px';
+    wf.appendChild(bar);
+  }
+
+  const items = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  items.forEach(i=>io.observe(i));
+</script>
+
+</body>
+</html>
