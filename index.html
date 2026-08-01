@@ -3,109 +3,330 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ai Visual Craft By SEESEE</title>
+<title>AI Visual Craft — Master AI Video & Image Prompting</title>
+<meta name="description" content="Learn to prompt AI video and image tools like a pro. Cinematic prompting, character consistency, monetizable content — no more AI slop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          background: 'oklch(0.08 0 0)',
+          foreground: 'oklch(0.98 0 0)',
+          ink: 'oklch(0.04 0 0)',
+          lime: 'oklch(0.93 0.24 128)',
+          'lime-dim': 'oklch(0.78 0.2 128)',
+          card: 'oklch(0.11 0 0)',
+          border: 'oklch(0.2 0 0)',
+          muted: 'oklch(0.15 0 0)',
+          'muted-foreground': 'oklch(0.65 0 0)',
+        },
+        fontFamily: {
+          display: ['"Archivo Black"', 'Anton', 'system-ui', 'sans-serif'],
+          body: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
 <style>
-  :root{
-    --black:#0A0B0E;
-    --panel:#101218;
-    --panel-line:#1E212B;
-    --ink:#E9EAEE;
-    --ink-dim:#8A8D9A;
-    --cyan:#3FF0D6;
-    --magenta:#FF3D8A;
-    --violet:#8B7BFF;
-    --yellow:#F2C230;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{ scroll-behavior:smooth; }
   body{
-    background:var(--black);
-    color:var(--ink);
-    font-family:'Inter', sans-serif;
-    overflow-x:hidden;
+    background-color: oklch(0.08 0 0);
+    color: oklch(0.98 0 0);
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top, oklch(0.14 0.05 128 / 0.15), transparent 60%),
+      linear-gradient(oklch(1 0 0 / 0.015) 1px, transparent 1px);
+    background-size: auto, 100% 3px;
   }
-  ::selection{ background:var(--magenta); color:#0A0B0E; }
+  ::selection{ background: oklch(0.93 0.24 128); color: oklch(0.04 0 0); }
 
-  .mono{ font-family:'JetBrains Mono', monospace; }
+  @keyframes glitch-1 {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    20% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 1px); }
+    40% { clip-path: inset(55% 0 15% 0); transform: translate(2px, -1px); }
+    60% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 0); }
+    80% { clip-path: inset(70% 0 5% 0); transform: translate(3px, 1px); }
+  }
+  @keyframes glitch-2 {
+    0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    25% { clip-path: inset(40% 0 40% 0); transform: translate(3px, -1px); }
+    50% { clip-path: inset(5% 0 85% 0); transform: translate(-2px, 1px); }
+    75% { clip-path: inset(75% 0 10% 0); transform: translate(2px, 0); }
+  }
+  @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+  @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
 
-  .scope-bar{
-    height:3px;
-    width:100%;
-    background:linear-gradient(90deg, var(--cyan) 0%, var(--violet) 33%, var(--magenta) 66%, var(--yellow) 100%);
-    position:sticky; top:0; z-index:50;
+  .glitch{ position:relative; display:inline-block; color: oklch(0.98 0 0); }
+  .glitch::before, .glitch::after{ content: attr(data-text); position:absolute; inset:0; pointer-events:none; }
+  .glitch::before{ color: oklch(0.93 0.24 128); animation: glitch-1 3.2s infinite steps(1); mix-blend-mode: screen; transform: translate(-2px, 0); }
+  .glitch::after{ color: oklch(0.7 0.25 25); animation: glitch-2 2.6s infinite steps(1); mix-blend-mode: screen; transform: translate(2px, 0); }
+
+  .glitch-lime{ position:relative; display:inline-block; color: oklch(0.93 0.24 128); }
+  .glitch-lime::before, .glitch-lime::after{ content: attr(data-text); position:absolute; inset:0; pointer-events:none; }
+  .glitch-lime::before{ color: oklch(1 0 0); animation: glitch-1 3.2s infinite steps(1); mix-blend-mode: difference; transform: translate(-3px, 0); }
+  .glitch-lime::after{ color: oklch(0.7 0.25 25); animation: glitch-2 2.6s infinite steps(1); mix-blend-mode: screen; transform: translate(3px, 0); }
+
+  .stamp{
+    display:inline-block; background: oklch(0.93 0.24 128); color: oklch(0.04 0 0);
+    font-family:'Archivo Black', sans-serif; font-weight:900; letter-spacing:0.05em;
+    padding:0.15em 0.5em; transform: rotate(-4deg);
+    box-shadow: 4px 4px 0 oklch(0.04 0 0), 4px 4px 0 1px oklch(0.93 0.24 128);
   }
 
-  nav{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:28px 6vw;
-    position:sticky; top:3px; z-index:40;
-    background:rgba(10,11,14,0.85);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--panel-line);
+  .btn-lime{
+    display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+    background: oklch(0.93 0.24 128); color: oklch(0.04 0 0);
+    font-family:'Archivo Black', sans-serif; font-weight:900; letter-spacing:0.08em; text-transform:uppercase;
+    padding:1rem 2rem; border:2px solid oklch(0.93 0.24 128); position:relative;
+    transition: transform .12s ease, box-shadow .12s ease;
+    box-shadow: 6px 6px 0 oklch(0.98 0 0); text-decoration:none; cursor:pointer;
   }
-  .logo{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:1.15rem;
-    letter-spacing:0.02em;
-  }
-  .logo span{ color:var(--magenta); }
-  .tagline-nav{
-    font-family:'JetBrains Mono', monospace;
-    font-size:0.7rem;
-    color:var(--ink-dim);
-    letter-spacing:0.08em;
-    display:none;
-  }
-  @media(min-width:640px){ .tagline-nav{ display:block; } }
+  .btn-lime:hover{ transform: translate(-2px,-2px); box-shadow: 8px 8px 0 oklch(0.78 0.2 128); }
+  .btn-lime:active{ transform: translate(2px,2px); box-shadow: 2px 2px 0 oklch(0.98 0 0); }
 
-  .nav-cta{
-    font-family:'JetBrains Mono', monospace;
-    font-size:0.78rem;
-    color:var(--ink);
-    text-decoration:none;
-    border:1px solid var(--panel-line);
-    padding:9px 18px;
-    border-radius:2px;
-    transition:border-color .2s, color .2s;
+  .btn-ghost{
+    display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+    background:transparent; color: oklch(0.98 0 0);
+    font-family:'Archivo Black', sans-serif; font-weight:900; letter-spacing:0.08em; text-transform:uppercase;
+    padding:1rem 2rem; border:2px solid oklch(0.98 0 0); transition:all .12s ease;
+    text-decoration:none; cursor:pointer;
   }
-  .nav-cta:hover{ border-color:var(--cyan); color:var(--cyan); }
+  .btn-ghost:hover{ background: oklch(0.93 0.24 128); color: oklch(0.04 0 0); border-color: oklch(0.93 0.24 128); }
 
-  .hero{
-    padding:9vw 6vw 6vw;
-    position:relative;
-    border-bottom:1px solid var(--panel-line);
+  .scan-overlay{ position:relative; overflow:hidden; }
+  .scan-overlay::before{
+    content:''; position:absolute; left:0; right:0; height:40%;
+    background: linear-gradient(to bottom, transparent, oklch(0.93 0.24 128 / 0.08), transparent);
+    animation: scanline 6s linear infinite; pointer-events:none;
   }
-  .timecode{
-    font-family:'JetBrains Mono', monospace;
-    font-size:0.78rem;
-    color:var(--cyan);
-    letter-spacing:0.08em;
-    margin-bottom:28px;
-    display:flex; align-items:center; gap:10px;
-  }
-  .timecode::before{
-    content:'';
-    width:7px; height:7px; border-radius:50%;
-    background:var(--magenta);
-    animation:pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  .flicker{ animation: flicker 4s infinite; }
 
-  h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700;
-    font-size:clamp(2.4rem, 6.4vw, 5.2rem);
-    line-height:1.02;
-    letter-spacing:-0.02em;
-    max-width:16ch;
+  .placeholder-img{
+    background: repeating-linear-gradient(45deg, oklch(0.15 0 0), oklch(0.15 0 0) 10px, oklch(0.12 0 0) 10px, oklch(0.12 0 0) 20px);
   }
-  h1 .accent{
-    background:linear-gradient(90deg, var(--cyan), var(--violet) 55%, var(--magenta));
-    -webkit-background-clip:text;
-    background-clip:text;
+
+  .faq-panel{ display:grid; grid-template-rows: 0fr; opacity:0; transition: all .3s ease; }
+  .faq-panel.open{ grid-template-rows: 1fr; opacity:1; padding-bottom:1.5rem; }
+  .faq-panel > div{ overflow:hidden; }
+  .chev{ transition: transform .3s ease; }
+  .chev.open{ transform: rotate(180deg); }
+</style>
+</head>
+<body class="font-body">
+
+  <!-- NAV -->
+  <header class="fixed top-0 inset-x-0 z-50 border-b border-border/60 backdrop-blur-md bg-background/70">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-2" aria-label="AI Visual Craft">
+        <div class="h-9 w-9 bg-lime flex items-center justify-center font-display text-ink text-sm">AI</div>
+        <span class="font-display text-sm tracking-[0.25em] uppercase text-foreground/70 hidden sm:inline">
+          AI/Visual<span class="text-lime">/</span>Craft
+        </span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        <a href="#teach" class="hover:text-lime transition-colors">Curriculum</a>
+        <a href="#tiers" class="hover:text-lime transition-colors">Tiers</a>
+        <a href="#work" class="hover:text-lime transition-colors">Work</a>
+        <a href="#faq" class="hover:text-lime transition-colors">FAQ</a>
+      </nav>
+      <a href="#join" class="btn-lime text-xs !py-2 !px-4">Join →</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="top" class="relative min-h-screen flex flex-col justify-center pt-24 pb-16 px-6 scan-overlay">
+      <div class="absolute top-24 left-6 w-8 h-8 border-l-2 border-t-2 border-lime"></div>
+      <div class="absolute top-24 right-6 w-8 h-8 border-r-2 border-t-2 border-lime"></div>
+      <div class="absolute bottom-16 left-6 w-8 h-8 border-l-2 border-b-2 border-lime"></div>
+      <div class="absolute bottom-16 right-6 w-8 h-8 border-r-2 border-b-2 border-lime"></div>
+
+      <div class="max-w-7xl mx-auto w-full">
+        <div class="flex items-center gap-3 mb-8 font-mono text-xs tracking-[0.3em] uppercase text-muted-foreground">
+          <span class="inline-block w-8 h-px bg-lime"></span>
+          <span>SIGNAL // 0x001 — TRANSMISSION ACTIVE</span>
+        </div>
+
+        <h1 class="font-display text-6xl md:text-8xl leading-[0.9] flicker">
+          AI/VISUAL<br><span class="text-lime">/CRAFT</span>
+        </h1>
+
+        <div class="mt-10 md:mt-14 grid md:grid-cols-[1.2fr_1fr] gap-10 items-end">
+          <p class="text-xl md:text-3xl font-display leading-tight max-w-2xl">
+            Master AI video &amp; image prompting.
+            <span class="text-lime">Stop making slop.</span>
+          </p>
+          <div class="space-y-4">
+            <p class="text-sm text-muted-foreground max-w-md font-mono leading-relaxed">
+              The craft channel for creators using Seedance, Kling, Midjourney, Flux,
+              and Runway. Prompts, systems, and cinematic direction — free on socials,
+              deeper in the Telegram.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <a href="#join" class="btn-lime">Join Telegram</a>
+              <a href="#work" class="btn-ghost">Free Lessons</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="border-y border-border py-10 px-6 bg-card/40">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-4 justify-between">
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground shrink-0">
+          Trusted by creators // YouTube · TikTok · Reels · Telegram
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+          <div><div class="font-display text-3xl md:text-4xl text-lime">180K+</div><div class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">YouTube Subs</div></div>
+          <div><div class="font-display text-3xl md:text-4xl text-lime">42M</div><div class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Total Views</div></div>
+          <div><div class="font-display text-3xl md:text-4xl text-lime">9.4K</div><div class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Telegram Crew</div></div>
+          <div><div class="font-display text-3xl md:text-4xl text-lime">Top 1%</div><div class="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-1">AI Creators</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACH -->
+    <section id="teach" class="py-24 md:py-32 px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6 font-mono text-xs tracking-[0.3em] uppercase text-lime">
+          <span class="inline-block w-2 h-2 bg-lime"></span><span>02</span>
+          <span class="text-muted-foreground">// What We Teach</span>
+        </div>
+        <h2 class="font-display text-5xl md:text-7xl leading-[0.9] max-w-4xl mb-16">
+          Not tutorials. <span class="text-lime">A craft.</span>
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-px bg-border">
+          <div class="group bg-background p-8 md:p-10 relative hover:bg-card transition-colors">
+            <div class="flex items-start justify-between mb-8">
+              <span class="font-display text-6xl text-lime/30 group-hover:text-lime transition-colors">01</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-3xl mb-3 leading-tight">Prompt Engineering for Video</h3>
+            <p class="text-muted-foreground leading-relaxed max-w-md">Structured prompts for Seedance, Kling, Runway, Veo. Motion, shot language, timing — the parts models actually listen to.</p>
+          </div>
+          <div class="group bg-background p-8 md:p-10 relative hover:bg-card transition-colors">
+            <div class="flex items-start justify-between mb-8">
+              <span class="font-display text-6xl text-lime/30 group-hover:text-lime transition-colors">02</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-3xl mb-3 leading-tight">Character Consistency Systems</h3>
+            <p class="text-muted-foreground leading-relaxed max-w-md">Keep faces, wardrobes, and worlds locked across shots. Reference stacks, seed control, and Midjourney/Flux workflows.</p>
+          </div>
+          <div class="group bg-background p-8 md:p-10 relative hover:bg-card transition-colors">
+            <div class="flex items-start justify-between mb-8">
+              <span class="font-display text-6xl text-lime/30 group-hover:text-lime transition-colors">03</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-3xl mb-3 leading-tight">Cinematic Style Direction</h3>
+            <p class="text-muted-foreground leading-relaxed max-w-md">Talk to the model like a DP. Lensing, lighting, color palettes, film emulation. Move from AI look to intentional look.</p>
+          </div>
+          <div class="group bg-background p-8 md:p-10 relative hover:bg-card transition-colors">
+            <div class="flex items-start justify-between mb-8">
+              <span class="font-display text-6xl text-lime/30 group-hover:text-lime transition-colors">04</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-3xl mb-3 leading-tight">Prompts → Monetizable Content</h3>
+            <p class="text-muted-foreground leading-relaxed max-w-md">Package your outputs into shorts, series, and client work. Publishing systems that scale without breaking quality.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIERS -->
+    <section id="tiers" class="py-24 md:py-32 px-6 border-t border-border">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6 font-mono text-xs tracking-[0.3em] uppercase text-lime">
+          <span class="inline-block w-2 h-2 bg-lime"></span><span>03</span>
+          <span class="text-muted-foreground">// Free vs Premium</span>
+        </div>
+        <h2 class="font-display text-5xl md:text-7xl leading-[0.9] max-w-4xl mb-16">
+          Learn free. <span class="text-lime">Go deeper</span> when you're ready.
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="border border-border p-8 md:p-10 bg-card/40">
+            <div class="flex items-baseline justify-between mb-6">
+              <h3 class="font-display text-3xl">FREE</h3>
+              <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Socials</span>
+            </div>
+            <p class="text-muted-foreground mb-8">Everything published on YouTube, TikTok, Instagram, and Telegram broadcast.</p>
+            <ul class="space-y-3 font-mono text-sm">
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Weekly YouTube breakdowns</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>TikTok / Reels quick tips</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Public prompt teardowns</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Tool comparison drops</span></li>
+              <li class="flex items-start gap-3 text-muted-foreground/60"><span>✗</span><span>Full prompt packs</span></li>
+            </ul>
+            <a href="#join" class="btn-ghost mt-8 w-full">Subscribe on YouTube</a>
+          </div>
+
+          <div class="border-2 border-lime p-8 md:p-10 bg-card relative overflow-hidden">
+            <div class="absolute -top-2 -right-2 stamp text-xs">INSIDE</div>
+            <div class="flex items-baseline justify-between mb-6">
+              <h3 class="font-display text-3xl text-lime">CRAFT/INNER</h3>
+              <span class="font-mono text-xs uppercase tracking-widest text-lime">Telegram</span>
+            </div>
+            <p class="text-muted-foreground mb-8">The private lab. Every prompt pack, workflow, and behind-the-shot breakdown.</p>
+            <ul class="space-y-3 font-mono text-sm">
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Private Telegram channel</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Full prompt packs (video + image)</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Character consistency templates</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Live prompt reviews</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>First access to new models</span></li>
+              <li class="flex items-start gap-3"><span class="text-lime">✓</span><span>Monetization playbooks</span></li>
+            </ul>
+            <a href="#join" class="btn-lime mt-8 w-full">Join the Inner Channel</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="py-24 md:py-32 px-6 border-t border-border">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-6 font-mono text-xs tracking-[0.3em] uppercase text-lime">
+          <span class="inline-block w-2 h-2 bg-lime"></span><span>04</span>
+          <span class="text-muted-foreground">// Selected Work</span>
+        </div>
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+          <h2 class="font-display text-5xl md:text-7xl leading-[0.9] max-w-3xl">
+            Frames, not <span class="text-lime">filler.</span>
+          </h2>
+          <p class="text-muted-foreground max-w-sm font-mono text-sm">Stills and clips built with the exact systems we teach.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span class="text-lime">FRAME_01</span><span class="text-muted-foreground">SEEDANCE</span>
+            </figcaption>
+          </figure>
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span class="text-lime">FRAME_02</span><span class="text-muted-foreground">MJ v7</span>
+            </figcaption>
+          </figure>
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span class="text-lime">FRAME_03</span><span class="text-muted-foreground">KLING</span>
+            </figcaption>
+          </figure>
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span class="text-lime">FRAME_04</span><span class="text-muted-foreground">FLUX</span>
+            </figcaption>
+          </figure>
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-mono text-[10px] uppercase tracking-widest">
+              <span class="text-lime">FRAME_05</span><span class="text-muted-foreground">RUNWAY</span>
+            </figcaption>
+          </figure>
+          <figure class="relative aspect-[3/4] overflow-hidden bg-card group border border-border placeholder-img">
+            <figcaption class="absolute bottom-3 left-3 right-3 flex items-end justify-between font-m    background-clip:text;
     color:transparent;
   }
   .hero-sub{
