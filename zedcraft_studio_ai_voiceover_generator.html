@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEDCraft Studio® — Voices Beyond Reality | AI Voiceover Generator</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Three.js for 3D Liquid Chrome Sculptures & Spiky Star -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Google Fonts: Syne (avant-garde display), Chakra Petch (sharp tech HUD), and Outfit (modern clean UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Outfit:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        tech: ['Chakra Petch', 'sans-serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        obsidian: '#050507',
+                        lavender: '#c09eff',
+                        violetGlow: '#8b5cf6',
+                        zedGreen: '#198A00',
+                        zedCopper: '#EF7D00',
+                        zedRed: '#DE2010',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Core Obsidian Theme & Custom Scrollbar */
+        :root {
+            --bg-obsidian: #050507;
+            --violet-glow: #9333ea;
+            --lavender: #c29dff;
+        }
+
+        body {
+            background-color: var(--bg-obsidian);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050507;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(192, 158, 255, 0.25);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(192, 158, 255, 0.5);
+        }
+
+        /* Hero Typography Fluid Sizing */
+        .hero-headline {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            font-size: clamp(2.75rem, 8.2vw, 7.25rem);
+            text-transform: uppercase;
+        }
+
+        /* ZEDCraft Brand Wordmark Accent */
+        .zed-wordmark-accent {
+            background: linear-gradient(90deg, #ffffff 0%, #c09eff 55%, #EF7D00 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Soft Lavender Highlight Text */
+        .lavender-text {
+            color: #c09eff;
+            text-shadow: 0 0 38px rgba(168, 85, 247, 0.38);
+        }
+
+        /* Liquid Chrome Metallic Text ("REALITY") */
+        .chrome-text {
+            background: linear-gradient(
+                180deg,
+                #ffffff 0%,
+                #e4e4e7 22%,
+                #52525b 48%,
+                #ffffff 54%,
+                #c09eff 76%,
+                #27272a 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 6px 24px rgba(168, 85, 247, 0.28));
+        }
+
+        /* Cyber Glass Surfaces */
+        .cyber-glass {
+            background: rgba(14, 14, 20, 0.58);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .cyber-glass-strong {
+            background: rgba(12, 12, 18, 0.78);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        /* Liquid Chrome Primary CTA Button */
+        .btn-chrome {
+            background: linear-gradient(135deg, #ffffff 0%, #e9d5ff 50%, #c09eff 100%);
+            color: #050507;
+            box-shadow: 0 0 28px rgba(192, 158, 255, 0.38);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        }
+        .btn-chrome:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 0 38px rgba(192, 158, 255, 0.62);
+            filter: brightness(1.05);
+        }
+        .btn-chrome:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Equalizer Bar Animation */
+        @keyframes eqPulse {
+            0%, 100% { transform: scaleY(0.35); opacity: 0.7; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+        .eq-bar {
+            transform-origin: bottom;
+            animation: eqPulse 1.1s ease-in-out infinite;
+        }
+
+        /* Slow Wireframe Sphere Rotation */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 24s linear infinite;
+        }
+
+        /* Exact Background Art Elastic Jiggle Animation */
+        @keyframes artJiggle {
+            0%, 100% {
+                transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
+            }
+            25% {
+                transform: translate3d(3px, -5px, 0) scale(1.012, 0.992) rotate(0.45deg);
+            }
+            50% {
+                transform: translate3d(-2px, 3px, 0) scale(0.992, 1.01) rotate(-0.35deg);
+            }
+            75% {
+                transform: translate3d(2px, -2px, 0) scale(1.008, 0.995) rotate(0.25deg);
+            }
+        }
+        .bg-art-jiggle {
+            animation: artJiggle 3.8s ease-in-out infinite;
+            transform-origin: center center;
+        }
+
+        /* Custom Range Sliders */
+        input[type="range"].cyber-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            outline: none;
+        }
+        input[type="range"].cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffffff, #c09eff);
+            box-shadow: 0 0 12px rgba(192, 158, 255, 0.8);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-white antialiased selection:bg-lavender/30 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm pointer-events-none"></div>
+
+    <!-- =========================================================
+         HERO SECTION — Y2K CYBER-CHROME AESTHETIC
+         ========================================================= -->
+    <section id="home" class="relative min-h-screen flex flex-col justify-between overflow-hidden border-b border-white/10">
+
+        <!-- Ambient Violet Nebula Glows -->
+        <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+            <div class="absolute -top-24 right-[12%] w-[540px] h-[540px] rounded-full bg-purple-600/30 blur-[150px]"></div>
+            <div class="absolute bottom-[-12%] right-[18%] w-[480px] h-[480px] rounded-full bg-fuchsia-700/20 blur-[150px]"></div>
+            <div class="absolute top-[30%] left-[-8%] w-[360px] h-[360px] rounded-full bg-violet-900/20 blur-[130px]"></div>
+        </div>
+
+        <!-- Hairline Orbital SVG Grid Overlay -->
+        <svg class="pointer-events-none absolute inset-0 w-full h-full z-0 opacity-30" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice">
+            <circle cx="960" cy="390" r="320" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
+            <ellipse cx="960" cy="390" rx="480" ry="150" transform="rotate(-14 960 390)" stroke="rgba(192,158,255,0.18)" stroke-width="0.9"/>
+            <line x1="0" y1="210" x2="1440" y2="210" stroke="rgba(255,255,255,0.06)" stroke-width="0.7"/>
+            <line x1="0" y1="710" x2="1440" y2="710" stroke="rgba(255,255,255,0.06)" stroke-width="0.7"/>
+            <line x1="420" y1="0" x2="420" y2="900" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+            <line x1="1080" y1="0" x2="1080" y2="900" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+        </svg>
+
+        <!-- Exact Unedited User Background Art Layer (Right-Center, Jiggle Motion, Soft Masked) -->
+        <div id="hero-bg-art-wrapper" class="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[62%] lg:w-[54%] z-[5] flex items-center justify-center overflow-hidden">
+            <img
+                id="hero-bg-art-img"
+                src="1000702062_3.jpg"
+                alt="ZEDCraft Studio Background Art"
+                class="bg-art-jiggle h-[92%] max-w-none object-contain opacity-45 select-none"
+                style="-webkit-mask-image: radial-gradient(ellipse 68% 72% at 55% 48%, #000 35%, transparent 82%); mask-image: radial-gradient(ellipse 68% 72% at 55% 48%, #000 35%, transparent 82%);"
+            />
+        </div>
+
+        <!-- Left-Side Obsidian Scrim so Headline & Controls Stay 100% Crisp -->
+        <div class="pointer-events-none absolute inset-0 z-[6] bg-gradient-to-r from-[#050507] via-[#050507]/75 to-transparent"></div>
+
+        <!-- Three.js 3D Liquid Chrome Sculptures & Spiky Star Canvas -->
+        <canvas id="hero-3d-canvas" class="pointer-events-none absolute inset-0 w-full h-full z-10"></canvas>
+
+        <!-- TOP NAVIGATION BAR (Matching Reference Image Layout) -->
+        <header class="relative z-20 w-full max-w-[1440px] mx-auto px-5 sm:px-10 pt-6 sm:pt-8 flex items-center justify-between gap-4">
+            <!-- Brand Left: Custom Zambian-Inspired Icon Logo + Redesigned Wordmark -->
+            <a href="#home" class="flex items-center gap-3 group">
+                <!-- Zambian Fish Eagle + Neural Soundwave Emblem SVG -->
+                <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-[#198A00]/25 via-obsidian to-[#EF7D00]/20 border border-white/20 group-hover:border-[#EF7D00]/70 shadow-[0_0_24px_rgba(25,138,0,0.28)] flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-105">
+                    <svg class="w-8 h-8" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ZEDCraft Studio Zambia Logo">
+                        <defs>
+                            <linearGradient id="zedEagleGrad" x1="8" y1="8" x2="40" y2="38" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#FF9E2C"/>
+                                <stop offset="55%" stop-color="#EF7D00"/>
+                                <stop offset="100%" stop-color="#DE2010"/>
+                            </linearGradient>
+                            <linearGradient id="zedWaveGrad" x1="12" y1="24" x2="36" y2="24" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#22c55e"/>
+                                <stop offset="50%" stop-color="#ffffff"/>
+                                <stop offset="100%" stop-color="#c09eff"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Hexagonal Cyber Shield Frame -->
+                        <path d="M24 3L42 13V35L24 45L6 35V13L24 3Z" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" fill="rgba(5,5,7,0.65)"/>
+                        <!-- Stylized Soaring Zambian African Fish Eagle Wings -->
+                        <path d="M9 17.5C14.5 14 19.5 15 24 19.5C28.5 15 33.5 14 39 17.5L34.5 22.5C30.8 20.5 27.2 21.2 24 24.5C20.8 21.2 17.2 20.5 13.5 22.5L9 17.5Z" fill="url(#zedEagleGrad)"/>
+                        <!-- Eagle Crest / Head -->
+                        <path d="M24 11.5L26.5 16L24 18.2L21.5 16L24 11.5Z" fill="#FFAE42"/>
+                        <!-- Neural Soundwave Bars + Geometric Z Base -->
+                        <rect x="14.5" y="27" width="2.4" height="6" rx="1.2" fill="#198A00"/>
+                        <rect x="19" y="24.5" width="2.4" height="11" rx="1.2" fill="url(#zedWaveGrad)"/>
+                        <rect x="23" y="22.5" width="2.4" height="14.5" rx="1.2" fill="#ffffff"/>
+                        <rect x="27" y="24.5" width="2.4" height="11" rx="1.2" fill="url(#zedWaveGrad)"/>
+                        <rect x="31.5" y="27" width="2.4" height="6" rx="1.2" fill="#EF7D00"/>
+                        <!-- Subtle Zambian Tricolor Micro-Accent Bar -->
+                        <rect x="17" y="39.5" width="4.5" height="2" rx="1" fill="#198A00"/>
+                        <rect x="22" y="39.5" width="4.5" height="2" rx="1" fill="#DE2010"/>
+                        <rect x="27" y="39.5" width="4.5" height="2" rx="1" fill="#EF7D00"/>
+                    </svg>
+                </div>
+
+                <!-- Redesigned Brand Wordmark -->
+                <div class="flex flex-col leading-none">
+                    <div class="flex items-center gap-1">
+                        <span class="font-display text-sm sm:text-base tracking-[0.1em] font-extrabold uppercase text-white">
+                            ZED<span class="zed-wordmark-accent">CRAFT</span>
+                        </span>
+                        <span class="font-tech text-[10px] sm:text-[11px] tracking-[0.2em] uppercase text-white/65 font-semibold">
+                            STUDIO<sup class="text-[8px] text-[#EF7D00] ml-0.5">®</sup>
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="inline-flex h-1 w-6 rounded-full overflow-hidden">
+                            <span class="flex-1 bg-[#198A00]"></span>
+                            <span class="flex-1 bg-[#DE2010]"></span>
+                            <span class="flex-1 bg-[#111111]"></span>
+                            <span class="flex-1 bg-[#EF7D00]"></span>
+                        </span>
+                        <span class="font-tech text-[9px] tracking-[0.22em] uppercase text-white/45">ZAMBIA • AI AUDIO</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Center Segmented Navigation Box (Desktop) -->
+            <nav class="hidden md:flex items-center cyber-glass rounded-md overflow-hidden divide-x divide-white/15">
+                <a href="#studio" class="px-6 py-2.5 text-[11px] font-tech tracking-[0.2em] uppercase text-white/80 hover:text-white hover:bg-white/10 transition-colors">Studio</a>
+                <a href="#voices" class="px-6 py-2.5 text-[11px] font-tech tracking-[0.2em] uppercase text-white/80 hover:text-white hover:bg-white/10 transition-colors">Voices</a>
+                <a href="#studio" onclick="switchStudioMode('dialogue')" class="px-6 py-2.5 text-[11px] font-tech tracking-[0.2em] uppercase text-white/80 hover:text-white hover:bg-white/10 transition-colors">Dialogue</a>
+                <a href="#pricing" class="px-6 py-2.5 text-[11px] font-tech tracking-[0.2em] uppercase text-white/80 hover:text-white hover:bg-white/10 transition-colors">Pricing</a>
+            </nav>
+
+            <!-- Right Identity Badge + Sonic Orb -->
+            <div class="flex items-center gap-3.5">
+                <!-- One-Click Loader to Attach Your Exact Image Inside the Live Preview -->
+                <input type="file" id="bg-art-input" accept="image/*" class="hidden" />
+                <button id="bg-art-upload-btn" onclick="document.getElementById('bg-art-input').click()" title="Load your exact background image" class="cyber-glass hover:border-lavender/70 px-3 py-1.5 rounded-lg text-[10px] font-tech tracking-[0.14em] uppercase text-white/80 hover:text-white transition-all flex items-center gap-1.5">
+                    <span id="bg-art-dot" class="w-1.5 h-1.5 rounded-full bg-lavender"></span>
+                    <span id="bg-art-btn-label">BG Art</span>
+                </button>
+
+                <div class="hidden sm:block text-right leading-tight">
+                    <div class="text-[10px] font-tech tracking-[0.18em] uppercase text-white/75">AI VOICE ENGINE</div>
+                    <div class="text-[10px] font-tech tracking-[0.18em] uppercase text-white/45">BASED IN THE FUTURE</div>
+                </div>
+                <span class="hidden sm:inline-block text-white/60 text-xs">✦</span>
+                <a href="#studio" title="Open Voice Studio" class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full p-[1.5px] bg-gradient-to-tr from-purple-500 via-lavender to-white shadow-[0_0_20px_rgba(168,85,247,0.5)] hover:scale-105 transition-transform">
+                    <div class="w-full h-full rounded-full bg-obsidian flex items-center justify-center overflow-hidden">
+                        <div class="flex items-end gap-[2px] h-4">
+                            <span class="w-[2px] h-2 bg-lavender rounded-full eq-bar" style="animation-delay:0s"></span>
+                            <span class="w-[2px] h-4 bg-white rounded-full eq-bar" style="animation-delay:0.2s"></span>
+                            <span class="w-[2px] h-3 bg-purple-400 rounded-full eq-bar" style="animation-delay:0.4s"></span>
+                            <span class="w-[2px] h-2.5 bg-white rounded-full eq-bar" style="animation-delay:0.15s"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <!-- Mobile Quick Nav Strip -->
+        <div class="relative z-20 flex md:hidden justify-center px-5 mt-4">
+            <nav class="flex items-center cyber-glass rounded-md overflow-hidden divide-x divide-white/15 w-full max-w-sm">
+                <a href="#studio" class="flex-1 text-center py-2 text-[10px] font-tech tracking-[0.16em] uppercase text-white/85">Studio</a>
+                <a href="#voices" class="flex-1 text-center py-2 text-[10px] font-tech tracking-[0.16em] uppercase text-white/85">Voices</a>
+                <a href="#studio" onclick="switchStudioMode('dialogue')" class="flex-1 text-center py-2 text-[10px] font-tech tracking-[0.16em] uppercase text-white/85">Dialogue</a>
+                <a href="#pricing" class="flex-1 text-center py-2 text-[10px] font-tech tracking-[0.16em] uppercase text-white/85">Pricing</a>
+            </nav>
+        </div>
+
+        <!-- FAR-LEFT VERTICAL PAGINATION DOTS (Matching Reference Image) -->
+        <div class="hidden lg:flex flex-col items-center gap-3 fixed left-6 top-1/2 -translate-y-1/2 z-30">
+            <a href="#home" aria-label="Hero Section" class="nav-dot w-2 h-2 rounded-full bg-white shadow-[0_0_10px_#fff] transition-all"></a>
+            <a href="#studio" aria-label="Voice Studio" class="nav-dot w-1.5 h-1.5 rounded-full bg-white/30 hover:bg-lavender transition-all"></a>
+            <a href="#voices" aria-label="Voice Library" class="nav-dot w-1.5 h-1.5 rounded-full bg-white/30 hover:bg-lavender transition-all"></a>
+            <a href="#pricing" aria-label="Pricing" class="nav-dot w-1.5 h-1.5 rounded-full bg-white/30 hover:bg-lavender transition-all"></a>
+        </div>
+
+        <!-- MAIN HERO TYPOGRAPHY BLOCK -->
+        <main class="relative z-20 w-full max-w-[1320px] mx-auto px-5 sm:px-10 lg:px-20 my-auto py-10 sm:py-12">
+            <div class="max-w-4xl">
+                <!-- Eyebrow -->
+                <p class="text-[10px] sm:text-xs font-tech tracking-[0.26em] uppercase text-white/60 mb-3 sm:mb-4 flex items-center gap-2">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-lavender animate-pulse"></span>
+                    NEURAL SYNTHESIS. SONIC FUTURES.
+                </p>
+
+                <!-- 3-Line Monumental Headline -->
+                <div class="relative">
+                    <!-- Line 1: Crisp White + Copyright Badge -->
+                    <div class="flex items-start gap-3 sm:gap-5">
+                        <h1 class="hero-headline text-white tracking-tight">VOICES</h1>
+                        <span class="text-[10px] sm:text-xs font-tech text-white/50 mt-2 sm:mt-4 tracking-widest">© 2026</span>
+                    </div>
+
+                    <!-- Line 2: Soft Lavender Purple -->
+                    <div class="hero-headline lavender-text tracking-tight">BEYOND</div>
+
+                    <!-- Line 3: Liquid Chrome Metallic + Side Description -->
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-8">
+                        <div class="hero-headline chrome-text tracking-tight">REALITY</div>
+                        <p class="text-xs sm:text-sm text-white/70 max-w-[260px] leading-relaxed font-light lg:mt-1">
+                            We craft hyper-realistic AI voiceovers, neural narration, and studio-grade audio for the new era.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Middle Row: Scroll Indicator, Wireframe Sphere & 4 Sonic Preset Squares -->
+                <div class="mt-8 sm:mt-10 flex flex-wrap items-center gap-5 sm:gap-7">
+                    <a href="#studio" class="flex items-center gap-3 group">
+                        <div class="text-[10px] font-tech tracking-[0.2em] uppercase text-white/60 leading-tight group-hover:text-white transition-colors">
+                            SCROLL TO<br>EXPLORE
+                        </div>
+                        <span class="w-2.5 h-2.5 rounded-full bg-lavender/70 group-hover:bg-white shadow-[0_0_12px_rgba(192,158,255,0.8)] transition-all"></span>
+                    </a>
+
+                    <!-- Wireframe 3D Sonic Sphere SVG -->
+                    <div class="w-11 h-11 opacity-60 animate-spin-slow">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="1">
+                            <circle cx="50" cy="50" r="44"/>
+                            <ellipse cx="50" cy="50" rx="22" ry="44"/>
+                            <ellipse cx="50" cy="50" rx="44" ry="18"/>
+                            <ellipse cx="50" cy="50" rx="44" ry="34"/>
+                            <line x1="6" y1="50" x2="94" y2="50"/>
+                            <line x1="50" y1="6" x2="50" y2="94"/>
+                        </svg>
+                    </div>
+
+                    <!-- 4 Interactive Quick-Preset Thumbnail Tiles (Matching Reference 4-Box Strip) -->
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="applyQuickPreset('trailer')" title="Cinematic Trailer Preset" class="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-lg cyber-glass overflow-hidden hover:border-lavender/80 transition-all flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/40 to-black"></div>
+                            <svg class="relative w-5 h-5 text-white/80 group-hover:scale-125 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1L14.2 9.8L23 12L14.2 14.2L12 23L9.8 14.2L1 12L9.8 9.8L12 1Z"/>
+                            </svg>
+                        </button>
+                        <button onclick="applyQuickPreset('cyberpunk')" title="Cyberpunk Narrator Preset" class="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-lg cyber-glass overflow-hidden hover:border-lavender/80 transition-all flex items-center justify-center">
+                            <svg class="w-full h-full opacity-75 group-hover:opacity-100 transition-opacity" viewBox="0 0 48 48" fill="none">
+                                <path d="M4 34 Q 14 14 24 26 T 44 16" stroke="#c09eff" stroke-width="1.5"/>
+                                <path d="M4 38 Q 16 20 26 30 T 44 22" stroke="#ffffff" stroke-opacity="0.5" stroke-width="1"/>
+                                <path d="M4 28 Q 18 8 28 20 T 44 10" stroke="#9333ea" stroke-width="1"/>
+                            </svg>
+                        </button>
+                        <button onclick="applyQuickPreset('luxury')" title="Luxury Commercial Preset" class="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-lg cyber-glass overflow-hidden hover:border-lavender/80 transition-all">
+                            <div class="w-full h-full bg-[radial-gradient(circle_at_30%_30%,#e9d5ff,#7e22ce_55%,#09090b_95%)] group-hover:scale-110 transition-transform duration-300"></div>
+                        </button>
+                        <button onclick="applyQuickPreset('podcast')" title="Studio Podcast Preset" class="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-lg cyber-glass overflow-hidden hover:border-lavender/80 transition-all">
+                            <div class="w-full h-full bg-[repeating-linear-gradient(135deg,#ffffff_0px,#ffffff_2px,#18181b_2px,#18181b_6px)] opacity-70 group-hover:opacity-100 transition-opacity"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- BOTTOM HERO BAR (Matching Reference Bottom-Left Card & Bottom-Right CTA) -->
+        <div class="relative z-20 w-full max-w-[1440px] mx-auto px-5 sm:px-10 pb-6 sm:pb-8 flex flex-col sm:flex-row items-stretch sm:items-end justify-between gap-4">
+            <!-- Bottom-Left Feature Card (Matching "AVAILABLE FOR NEW PROJECTS") -->
+            <a href="#studio" class="group cyber-glass rounded-xl p-2 pr-5 flex items-center gap-4 hover:border-lavender/60 transition-all max-w-sm">
+                <!-- Purple-Tinted Sonic Visualizer Thumbnail -->
+                <div class="relative w-24 h-14 rounded-lg overflow-hidden bg-gradient-to-br from-purple-700/80 via-fuchsia-900/70 to-black flex items-center justify-center shrink-0 border border-white/10">
+                    <div class="flex items-center gap-1 h-7">
+                        <span class="w-1 h-3 bg-white/80 rounded-full eq-bar" style="animation-delay:0.1s"></span>
+                        <span class="w-1 h-6 bg-lavender rounded-full eq-bar" style="animation-delay:0.3s"></span>
+                        <span class="w-1 h-4 bg-white rounded-full eq-bar" style="animation-delay:0.5s"></span>
+                        <span class="w-1 h-7 bg-purple-300 rounded-full eq-bar" style="animation-delay:0.2s"></span>
+                        <span class="w-1 h-3 bg-white/80 rounded-full eq-bar" style="animation-delay:0.4s"></span>
+                    </div>
+                    <span class="absolute top-1.5 left-1.5 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                </div>
+                <div class="flex-1">
+                    <div class="text-[11px] font-tech tracking-[0.16em] uppercase text-white font-medium">STUDIO ONLINE</div>
+                    <div class="text-[11px] font-tech tracking-[0.16em] uppercase text-white/60">GENERATE VOICEOVER</div>
+                </div>
+                <div class="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center group-hover:bg-white group-hover:text-obsidian transition-all shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Bottom-Right CTA (Matching "LET'S BUILD THE FUTURE TOGETHER ↗") -->
+            <a href="#studio" class="group flex items-center justify-end gap-3 text-right py-2">
+                <div class="text-[10px] sm:text-[11px] font-tech tracking-[0.18em] uppercase text-white/75 group-hover:text-white leading-snug transition-colors">
+                    LET'S SYNTHESIZE<br>THE FUTURE<br>TOGETHER
+                </div>
+                <span class="text-lavender group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-lg">↗</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         ZEDCRAFT STUDIO — INTERACTIVE VOICEOVER WORKSTATION
+         (Powered by Gemini TTS API — ElevenLabs-Style Experience)
+         ========================================================= -->
+    <section id="studio" class="relative py-20 sm:py-28 px-5 sm:px-10 border-b border-white/10">
+        <!-- Subtle Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] max-w-4xl h-72 bg-purple-600/15 blur-[130px] pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-[1320px] mx-auto">
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                    <div class="text-[11px] font-tech tracking-[0.24em] uppercase text-lavender mb-2 flex items-center gap-2">
+                        <span>✦</span> NEURAL VOICE SYNTHESIS ENGINE
+                    </div>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold uppercase tracking-tight">
+                        VOICEOVER <span class="lavender-text">STUDIO</span>
+                    </h2>
+                </div>
+
+                <!-- Mode Switcher: Single Voiceover vs Multi-Speaker Dialogue -->
+                <div class="inline-flex cyber-glass rounded-xl p-1.5 self-start md:self-auto">
+                    <button id="mode-single-btn" onclick="switchStudioMode('single')" class="px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all bg-white text-obsidian font-semibold">
+                        Single Voiceover
+                    </button>
+                    <button id="mode-dialogue-btn" onclick="switchStudioMode('dialogue')" class="px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all text-white/70 hover:text-white">
+                        Multi-Speaker Dialogue
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHOOSE YOUR VOICE TYPE — INTERACTIVE CATEGORY SELECTOR -->
+            <div class="mb-7">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3.5">
+                    <span class="text-[11px] font-tech tracking-[0.22em] uppercase text-white/60">
+                        01 / CHOOSE VOICE TYPE
+                    </span>
+                    <span class="text-[11px] font-tech tracking-wider uppercase text-lavender">
+                        Instant Acoustic & Pacing Presets
+                    </span>
+                </div>
+
+                <div id="voice-type-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <!-- Viral Shorts & Reels (Highlighted Fast-Paced Mode) -->
+                    <button onclick="selectVoiceType('viral_shorts')" data-voice-type="viral_shorts" class="voice-type-card relative text-left p-4 rounded-xl cyber-glass border-lavender/70 bg-purple-500/15 hover:border-lavender transition-all group">
+                        <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-display uppercase font-bold tracking-wider bg-gradient-to-r from-lavender to-purple-500 text-obsidian">
+                            HOT
+                        </span>
+                        <div class="text-lg mb-2">⚡</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Viral Shorts</div>
+                        <div class="text-[10px] text-white/60 mt-1 leading-tight">Fast-paced, punchy Reels & TikTok hooks</div>
+                    </button>
+
+                    <!-- Cinematic Trailer -->
+                    <button onclick="selectVoiceType('cinematic')" data-voice-type="cinematic" class="voice-type-card text-left p-4 rounded-xl cyber-glass hover:border-lavender/60 transition-all group">
+                        <div class="text-lg mb-2">🎬</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Cinema Trailer</div>
+                        <div class="text-[10px] text-white/55 mt-1 leading-tight">Deep, dramatic & epic narration</div>
+                    </button>
+
+                    <!-- Podcast & YouTube -->
+                    <button onclick="selectVoiceType('podcast')" data-voice-type="podcast" class="voice-type-card text-left p-4 rounded-xl cyber-glass hover:border-lavender/60 transition-all group">
+                        <div class="text-lg mb-2">🎙️</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Creator Host</div>
+                        <div class="text-[10px] text-white/55 mt-1 leading-tight">Upbeat YouTube & podcast energy</div>
+                    </button>
+
+                    <!-- Luxury Commercial -->
+                    <button onclick="selectVoiceType('luxury')" data-voice-type="luxury" class="voice-type-card text-left p-4 rounded-xl cyber-glass hover:border-lavender/60 transition-all group">
+                        <div class="text-lg mb-2">💎</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Luxury Ad</div>
+                        <div class="text-[10px] text-white/55 mt-1 leading-tight">Sleek, modern brand commercials</div>
+                    </button>
+
+                    <!-- Documentary & Story -->
+                    <button onclick="selectVoiceType('documentary')" data-voice-type="documentary" class="voice-type-card text-left p-4 rounded-xl cyber-glass hover:border-lavender/60 transition-all group">
+                        <div class="text-lg mb-2">📖</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Documentary</div>
+                        <div class="text-[10px] text-white/55 mt-1 leading-tight">Calm, authoritative storytelling</div>
+                    </button>
+
+                    <!-- Futuristic AI / Gaming -->
+                    <button onclick="selectVoiceType('cyberpunk')" data-voice-type="cyberpunk" class="voice-type-card text-left p-4 rounded-xl cyber-glass hover:border-lavender/60 transition-all group">
+                        <div class="text-lg mb-2">🌌</div>
+                        <div class="font-display text-xs font-bold uppercase text-white tracking-wide leading-snug">Cyber AI</div>
+                        <div class="text-[10px] text-white/55 mt-1 leading-tight">Crisp sci-fi & gaming synthesis</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Studio Workstation Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- LEFT / MAIN SCRIPT & AUDIO PANEL (8 Cols) -->
+                <div class="lg:col-span-8 flex flex-col gap-6">
+
+                    <!-- Script Input Card -->
+                    <div class="cyber-glass-strong rounded-2xl p-5 sm:p-7 flex flex-col gap-5">
+                        <!-- Quick Sample Script Chips -->
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <span class="text-[11px] font-tech tracking-[0.18em] uppercase text-white/55">
+                                <span id="script-label">SCRIPT INPUT</span>
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="loadSampleScript('viral_shorts')" class="px-3 py-1.5 rounded-lg text-[11px] font-tech tracking-wider uppercase bg-purple-500/20 hover:bg-purple-500/35 border border-lavender/50 text-lavender font-medium transition-all">
+                                    ⚡ Viral Shorts Hook
+                                </button>
+                                <button onclick="loadSampleScript('trailer')" class="px-3 py-1.5 rounded-lg text-[11px] font-tech tracking-wider uppercase bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-lavender/50 text-white/80 transition-all">
+                                    Sci-Fi Trailer
+                                </button>
+                                <button onclick="loadSampleScript('luxury')" class="px-3 py-1.5 rounded-lg text-[11px] font-tech tracking-wider uppercase bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-lavender/50 text-white/80 transition-all">
+                                    Luxury Ad
+                                </button>
+                                <button onclick="loadSampleScript('podcast')" class="px-3 py-1.5 rounded-lg text-[11px] font-tech tracking-wider uppercase bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-lavender/50 text-white/80 transition-all">
+                                    Podcast Intro
+                                </button>
+                                <button onclick="loadSampleScript('dialogue')" class="px-3 py-1.5 rounded-lg text-[11px] font-tech tracking-wider uppercase bg-white/5 hover:bg-purple-500/20 border border-white/10 hover:border-lavender/50 text-white/80 transition-all">
+                                    2-Host Dialogue
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="relative">
+                            <textarea
+                                id="voice-script"
+                                rows="6"
+                                maxlength="1500"
+                                placeholder="Type or paste your script here... ZEDCraft Studio will synthesize lifelike neural audio with studio acoustics."
+                                class="w-full bg-black/50 border border-white/12 focus:border-lavender/70 rounded-xl p-4 sm:p-5 text-sm sm:text-base text-white placeholder-white/30 outline-none resize-y leading-relaxed transition-colors"
+                            >Welcome to ZEDCraft Studio. Where neural synthesis meets human emotion. Type any script, choose your signature voice, and craft cinema-grade voiceovers beyond reality.</textarea>
+                            <div class="flex items-center justify-between mt-2.5 text-[11px] font-tech text-white/45">
+                                <span id="dialogue-hint" class="hidden text-lavender">Use "Alex:" and "Maya:" prefixes for multi-speaker dialogue.</span>
+                                <span id="single-hint">Tip: Use punctuation and ellipses (...) for natural dramatic pauses.</span>
+                                <span><span id="char-count">167</span> / 1500</span>
+                            </div>
+                        </div>
+
+                        <!-- Generate Action Bar -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2 border-t border-white/10">
+                            <div class="flex items-center gap-3 text-xs text-white/60">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                                <span>Engine: <strong class="text-white font-medium">ZED-Neural v2.5 HD</strong></span>
+                                <span class="text-white/25">|</span>
+                                <span>24kHz WAV</span>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <button onclick="clearScript()" class="px-4 py-3 rounded-xl border border-white/15 hover:bg-white/10 text-xs font-tech tracking-[0.15em] uppercase text-white/75 transition-all">
+                                    Clear
+                                </button>
+                                <button id="generate-btn" onclick="generateVoiceover()" class="btn-chrome px-7 py-3 rounded-xl text-xs font-display tracking-[0.14em] uppercase font-bold flex items-center justify-center gap-2.5">
+                                    <svg id="gen-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 1L14.5 9.5L23 12L14.5 14.5L12 23L9.5 14.5L1 12L9.5 9.5L12 1Z"/>
+                                    </svg>
+                                    <svg id="gen-spinner" class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                                        <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
+                                    </svg>
+                                    <span id="gen-btn-text">Generate Voiceover</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Output & Live Waveform Visualizer Card -->
+                    <div class="cyber-glass-strong rounded-2xl p-5 sm:p-7">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-[11px] font-tech tracking-[0.2em] uppercase text-lavender">MASTER OUTPUT</span>
+                                <span id="output-voice-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-tech uppercase tracking-wider bg-white/10 text-white/80">Ready</span>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <!-- Playback Speed -->
+                                <select id="playback-speed" onchange="updatePlaybackSpeed()" class="bg-black/60 border border-white/15 rounded-lg px-2.5 py-1.5 text-[11px] font-tech text-white/85 outline-none focus:border-lavender">
+                                    <option value="0.75">0.75x</option>
+                                    <option value="1" selected>1.0x</option>
+                                    <option value="1.15">1.15x</option>
+                                    <option value="1.25">1.25x</option>
+                                    <option value="1.5">1.5x</option>
+                                </select>
+
+                                <!-- Download WAV Button -->
+                                <button id="download-wav-btn" onclick="downloadCurrentAudio()" disabled class="px-3.5 py-1.5 rounded-lg border border-white/15 hover:border-lavender/70 hover:bg-purple-500/15 disabled:opacity-35 disabled:cursor-not-allowed text-[11px] font-tech tracking-wider uppercase text-white flex items-center gap-1.5 transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+                                    </svg>
+                                    Download WAV
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Live Frequency Visualizer Canvas -->
+                        <div class="relative w-full h-28 sm:h-32 rounded-xl bg-black/70 border border-white/10 overflow-hidden mb-4">
+                            <canvas id="visualizer-canvas" class="w-full h-full block"></canvas>
+                            <div id="visualizer-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-white/35 pointer-events-none">
+                                <span class="text-xs font-tech tracking-[0.2em] uppercase">Awaiting Neural Synthesis</span>
+                            </div>
+                        </div>
+
+                        <!-- Custom Player Controls -->
+                        <div class="flex items-center gap-4">
+                            <button id="play-pause-btn" onclick="togglePlayPause()" disabled class="w-11 h-11 rounded-full bg-white text-obsidian hover:bg-lavender disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center shrink-0 transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)]">
+                                <svg id="icon-play" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="icon-pause" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+
+                            <div class="flex-1 flex flex-col gap-1.5">
+                                <input id="audio-seek" type="range" min="0" max="100" value="0" step="0.1" disabled class="w-full cyber-slider disabled:opacity-40">
+                                <div class="flex justify-between text-[10px] font-tech tracking-wider text-white/50">
+                                    <span id="time-current">0:00</span>
+                                    <span id="time-duration">0:00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Native Audio Element -->
+                        <audio id="studio-audio" crossorigin="anonymous"></audio>
+                    </div>
+                </div>
+
+                <!-- RIGHT VOICE CONFIGURATION SIDEBAR (4 Cols) -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+
+                    <!-- Voice Selector Card -->
+                    <div class="cyber-glass-strong rounded-2xl p-5 sm:p-6 flex flex-col gap-5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-tech tracking-[0.2em] uppercase text-lavender">VOICE CONFIGURATION</span>
+                            <span class="text-[10px] font-tech text-white/45 uppercase">12 Neural Models</span>
+                        </div>
+
+                        <!-- Single Speaker Selector -->
+                        <div id="single-voice-controls" class="flex flex-col gap-4">
+                            <div>
+                                <label class="block text-[11px] font-tech tracking-[0.15em] uppercase text-white/60 mb-2">Active Voice Persona</label>
+                                <select id="voice-select" class="w-full bg-black/70 border border-white/15 focus:border-lavender rounded-xl px-4 py-3 text-sm text-white outline-none">
+                                    <option value="Sadachbia">⚡ Sadachbia — Viral Shorts & Reels (Fast Hook)</option>
+                                    <option value="Laomedeia">⚡ Laomedeia — Reels Hype (Entertaining & Punchy)</option>
+                                    <option value="Fenrir">Fenrir — Deep, Cinematic & Excitable</option>
+                                    <option value="Zephyr" selected>Zephyr — Bright, Crisp & Futuristic</option>
+                                    <option value="Kore">Kore — Firm, Studio Narrator</option>
+                                    <option value="Puck">Puck — Upbeat, Energetic Host</option>
+                                    <option value="Charon">Charon — Informative Documentary</option>
+                                    <option value="Aoede">Aoede — Breezy, Modern Commercial</option>
+                                    <option value="Enceladus">Enceladus — Breathy, Intimate Whisper</option>
+                                    <option value="Algenib">Algenib — Gravelly, Movie Trailer</option>
+                                    <option value="Sulafat">Sulafat — Warm, Storytelling</option>
+                                    <option value="Leda">Leda — Youthful, Expressive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Multi-Speaker Selectors (Shown in Dialogue Mode) -->
+                        <div id="dialogue-voice-controls" class="hidden flex flex-col gap-4">
+                            <div>
+                                <label class="block text-[11px] font-tech tracking-[0.15em] uppercase text-white/60 mb-1.5">Speaker 1 (Alex)</label>
+                                <select id="speaker1-select" class="w-full bg-black/70 border border-white/15 focus:border-lavender rounded-xl px-3.5 py-2.5 text-sm text-white outline-none">
+                                    <option value="Kore" selected>Kore — Firm & Clear</option>
+                                    <option value="Fenrir">Fenrir — Deep & Bold</option>
+                                    <option value="Charon">Charon — Informative</option>
+                                    <option value="Algenib">Algenib — Gravelly</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-tech tracking-[0.15em] uppercase text-white/60 mb-1.5">Speaker 2 (Maya)</label>
+                                <select id="speaker2-select" class="w-full bg-black/70 border border-white/15 focus:border-lavender rounded-xl px-3.5 py-2.5 text-sm text-white outline-none">
+                                    <option value="Zephyr" selected>Zephyr — Bright & Modern</option>
+                                    <option value="Puck">Puck — Upbeat & Lively</option>
+                                    <option value="Aoede">Aoede — Breezy & Smooth</option>
+                                    <option value="Sulafat">Sulafat — Warm & Natural</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Style / Emotion Direction -->
+                        <div>
+                            <label class="block text-[11px] font-tech tracking-[0.15em] uppercase text-white/60 mb-2">Delivery Style & Emotion</label>
+                            <select id="style-select" class="w-full bg-black/70 border border-white/15 focus:border-lavender rounded-xl px-4 py-3 text-sm text-white outline-none">
+                                <option value="viral_shorts">⚡ Viral Shorts & Reels — Fast-Paced, Punchy Hook</option>
+                                <option value="natural" selected>Studio Natural — Balanced & Clear</option>
+                                <option value="cinematic">Epic Movie Trailer — Dramatic & Deep</option>
+                                <option value="energetic">High-Energy Commercial — Upbeat & Exciting</option>
+                                <option value="whisper">Intimate ASMR — Soft & Breathy</option>
+                                <option value="documentary">Documentary — Calm, Authoritative</option>
+                                <option value="cyberpunk">Futuristic AI — Crisp, Sleek & Confident</option>
+                            </select>
+                        </div>
+
+                        <!-- Vocal Tuning Sliders -->
+                        <div class="space-y-4 pt-2 border-t border-white/10">
+                            <div>
+                                <div class="flex justify-between text-[11px] font-tech uppercase tracking-wider mb-1.5">
+                                    <span class="text-white/65">Expressiveness</span>
+                                    <span id="expressiveness-val" class="text-lavender">75%</span>
+                                </div>
+                                <input id="expressiveness-slider" type="range" min="10" max="100" value="75" oninput="document.getElementById('expressiveness-val').textContent = this.value + '%'" class="w-full cyber-slider">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-[11px] font-tech uppercase tracking-wider mb-1.5">
+                                    <span class="text-white/65">Pacing Cadence</span>
+                                    <span id="pacing-val" class="text-lavender">Normal</span>
+                                </div>
+                                <input id="pacing-slider" type="range" min="1" max="3" value="2" oninput="updatePacingLabel(this.value)" class="w-full cyber-slider">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Session Takes / History -->
+                    <div class="cyber-glass-strong rounded-2xl p-5 sm:p-6 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[11px] font-tech tracking-[0.2em] uppercase text-lavender">SESSION HISTORY</span>
+                            <span id="history-count" class="text-[10px] font-tech text-white/45 uppercase">0 Takes</span>
+                        </div>
+                        <div id="history-list" class="flex flex-col gap-2.5 max-h-56 overflow-y-auto pr-1">
+                            <div class="text-xs text-white/35 py-6 text-center border border-dashed border-white/10 rounded-xl">
+                                Generated voiceovers will appear here for instant replay & download.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         SIGNATURE VOICE LIBRARY SHOWCASE
+         ========================================================= -->
+    <section id="voices" class="relative py-20 sm:py-28 px-5 sm:px-10 border-b border-white/10">
+        <div class="max-w-[1320px] mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+                <div>
+                    <div class="text-[11px] font-tech tracking-[0.24em] uppercase text-lavender mb-2">✦ CURATED NEURAL ROSTER</div>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase tracking-tight">
+                        SIGNATURE <span class="lavender-text">VOICES</span>
+                    </h2>
+                </div>
+                <p class="text-xs sm:text-sm text-white/55 max-w-md">
+                    Select any voice persona to load it directly into ZEDCraft Studio with optimized acoustic presets.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="voice-cards-grid">
+                <!-- Populated dynamically via JS for clean interactivity -->
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================
+         PRICING TIERS (FUTURISTIC HAIRLINE GLASS)
+         ========================================================= -->
+    <section id="pricing" class="relative py-20 sm:py-28 px-5 sm:px-10">
+        <div class="max-w-[1200px] mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-14">
+                <div class="text-[11px] font-tech tracking-[0.24em] uppercase text-lavender mb-2">✦ STUDIO ACCESS</div>
+                <h2 class="font-display text-3xl sm:text-4xl font-bold uppercase tracking-tight mb-3">
+                    SCALE YOUR <span class="lavender-text">SOUND</span>
+                </h2>
+                <p class="text-sm text-white/55">Transparent neural synthesis tiers built for independent creators, agencies, and global studios.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Tier 1 -->
+                <div class="cyber-glass rounded-2xl p-7 flex flex-col justify-between hover:border-white/25 transition-all">
+                    <div>
+                        <div class="text-xs font-tech tracking-[0.2em] uppercase text-white/60 mb-2">CREATOR</div>
+                        <div class="font-display text-3xl font-bold mb-1">$0<span class="text-xs font-sans font-normal text-white/45">/mo</span></div>
+                        <p class="text-xs text-white/50 mb-6">Explore neural synthesis and prototype voiceovers instantly.</p>
+                        <ul class="space-y-3 text-xs text-white/75 mb-8">
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> 10,000 characters / month</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> All 10 Signature Neural Voices</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> 24kHz WAV Downloads</li>
+                        </ul>
+                    </div>
+                    <a href="#studio" class="w-full py-3 rounded-xl border border-white/20 hover:bg-white hover:text-obsidian text-center text-xs font-tech tracking-[0.18em] uppercase transition-all">
+                        Start Free
+                    </a>
+                </div>
+
+                <!-- Tier 2 (Featured) -->
+                <div class="relative cyber-glass-strong rounded-2xl p-7 flex flex-col justify-between border-lavender/60 shadow-[0_0_45px_rgba(147,51,234,0.22)]">
+                    <span class="absolute -top-3 right-6 px-3 py-1 rounded-full bg-gradient-to-r from-lavender to-purple-500 text-obsidian text-[10px] font-display uppercase font-bold tracking-wider">
+                        Most Popular
+                    </span>
+                    <div>
+                        <div class="text-xs font-tech tracking-[0.2em] uppercase text-lavender mb-2">PRO STUDIO</div>
+                        <div class="font-display text-3xl font-bold mb-1">$22<span class="text-xs font-sans font-normal text-white/45">/mo</span></div>
+                        <p class="text-xs text-white/50 mb-6">Commercial-grade voiceovers, multi-speaker podcasts & ads.</p>
+                        <ul class="space-y-3 text-xs text-white/85 mb-8">
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> 250,000 characters / month</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> Multi-Speaker Dialogue Studio</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> Commercial Broadcast License</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> Priority GPU Synthesis</li>
+                        </ul>
+                    </div>
+                    <button onclick="showToast('Pro Studio trial activated in demo mode — generate unlimited samples above!', 'success')" class="btn-chrome w-full py-3 rounded-xl text-center text-xs font-display tracking-[0.15em] uppercase font-bold">
+                        Launch Pro
+                    </button>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="cyber-glass rounded-2xl p-7 flex flex-col justify-between hover:border-white/25 transition-all">
+                    <div>
+                        <div class="text-xs font-tech tracking-[0.2em] uppercase text-white/60 mb-2">ENTERPRISE</div>
+                        <div class="font-display text-3xl font-bold mb-1">$99<span class="text-xs font-sans font-normal text-white/45">/mo</span></div>
+                        <p class="text-xs text-white/50 mb-6">High-volume API access and custom studio pipelines.</p>
+                        <ul class="space-y-3 text-xs text-white/75 mb-8">
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> 2,000,000 characters / month</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> Ultra-Low Latency Streaming API</li>
+                            <li class="flex items-center gap-2"><span class="text-lavender">✦</span> Dedicated Acoustic Support</li>
+                        </ul>
+                    </div>
+                    <button onclick="showToast('Enterprise inquiries: hello@zedcraft.studio', 'info')" class="w-full py-3 rounded-xl border border-white/20 hover:bg-white hover:text-obsidian text-center text-xs font-tech tracking-[0.18em] uppercase transition-all">
+                        Contact Studio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-10 px-5 sm:px-10">
+        <div class="max-w-[1320px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/45 font-tech tracking-[0.15em] uppercase">
+            <div class="flex items-center gap-2.5 text-white">
+                <svg class="w-6 h-6" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 3L42 13V35L24 45L6 35V13L24 3Z" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" fill="rgba(25,138,0,0.18)"/>
+                    <path d="M10 18C15 14.5 19.5 15.5 24 19.5C28.5 15.5 33 14.5 38 18L34 22.5C30.5 20.8 27 21.5 24 24.5C21 21.5 17.5 20.8 14 22.5L10 18Z" fill="#EF7D00"/>
+                    <rect x="18" y="25" width="2.6" height="10" rx="1.3" fill="#22c55e"/>
+                    <rect x="22.7" y="23" width="2.6" height="14" rx="1.3" fill="#ffffff"/>
+                    <rect x="27.4" y="25" width="2.6" height="10" rx="1.3" fill="#EF7D00"/>
+                </svg>
+                <span class="font-display font-bold tracking-[0.12em]">ZED<span class="text-lavender">CRAFT</span> STUDIO®</span>
+            </div>
+            <div>CRAFTED IN ZAMBIA — NEURAL VOICE SYNTHESIS</div>
+            <div>© 2026 ZEDCRAFT STUDIO</div>
+        </div>
+    </footer>
+
+    <!-- =========================================================
+         JAVASCRIPT: THREE.JS 3D CHROME SCENE + GEMINI TTS ENGINE
+         ========================================================= -->
+    <script>
+        /* =========================================================
+           1. THREE.JS 3D LIQUID CHROME SCULPTURES & SPIKY STAR
+           ========================================================= */
+        function initHero3DScene() {
+            const canvas = document.getElementById('hero-3d-canvas');
+            if (!canvas || typeof THREE === 'undefined') return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+            camera.position.z = 11;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.35;
+
+            // Procedural Metallic Chrome + Violet Environment Map (No external URLs)
+            function createChromeEnvTexture() {
+                const envCanvas = document.createElement('canvas');
+                envCanvas.width = 512;
+                envCanvas.height = 256;
+                const ctx = envCanvas.getContext('2d');
+
+                // Deep obsidian base
+                const baseGrad = ctx.createLinearGradient(0, 0, 0, 256);
+                baseGrad.addColorStop(0, '#ffffff');
+                baseGrad.addColorStop(0.18, '#c084fc');
+                baseGrad.addColorStop(0.35, '#120822');
+                baseGrad.addColorStop(0.52, '#ffffff');
+                baseGrad.addColorStop(0.68, '#7e22ce');
+                baseGrad.addColorStop(0.85, '#09090d');
+                baseGrad.addColorStop(1, '#e9d5ff');
+                ctx.fillStyle = baseGrad;
+                ctx.fillRect(0, 0, 512, 256);
+
+                // Bright studio light strips for crisp liquid chrome reflections
+                ctx.fillStyle = 'rgba(255,255,255,0.95)';
+                ctx.fillRect(0, 28, 512, 16);
+                ctx.fillStyle = 'rgba(216,180,254,0.85)';
+                ctx.fillRect(0, 140, 512, 24);
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(180, 0, 40, 256);
+
+                const tex = new THREE.CanvasTexture(envCanvas);
+                tex.mapping = THREE.EquirectangularReflectionMapping;
+                return tex;
+            }
+
+            const envMap = createChromeEnvTexture();
+            scene.environment = envMap;
+
+            // Shared Liquid Chrome Material
+            const chromeMaterial = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                metalness: 1.0,
+                roughness: 0.07,
+                envMap: envMap,
+                envMapIntensity: 1.8
+            });
+
+            const violetChromeMaterial = new THREE.MeshStandardMaterial({
+                color: 0xd8b4fe,
+                metalness: 0.98,
+                roughness: 0.09,
+                envMap: envMap,
+                envMapIntensity: 2.0
+            });
+
+            // Lights for Vivid Highlights
+            const purpleLight = new THREE.PointLight(0xa855f7, 6, 30);
+            purpleLight.position.set(4, 3, 6);
+            scene.add(purpleLight);
+
+            const whiteKeyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+            whiteKeyLight.position.set(-5, 6, 8);
+            scene.add(whiteKeyLight);
+
+            const rimLight = new THREE.PointLight(0xe9d5ff, 4, 25);
+            rimLight.position.set(-6, -4, 5);
+            scene.add(rimLight);
+
+            // --- A. SPIKY 3D CHROME STAR (Upper Right — Signature Element from Image 1) ---
+            const starGroup = new THREE.Group();
+            const spikeGeo = new THREE.ConeGeometry(0.32, 2.35, 5);
+            spikeGeo.translate(0, 1.15, 0);
+
+            const directions = [
+                [0, 1, 0], [0, -1, 0], [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1],
+                [0.7, 0.7, 0.3], [-0.7, 0.7, -0.3], [0.7, -0.7, -0.3], [-0.7, -0.7, 0.3],
+                [0.4, 0.6, -0.7], [-0.4, -0.6, 0.7], [-0.6, 0.4, 0.7], [0.6, -0.4, -0.7]
+            ];
+
+            directions.forEach((dir, idx) => {
+                const spike = new THREE.Mesh(spikeGeo, idx % 2 === 0 ? chromeMaterial : violetChromeMaterial);
+                const vec = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
+                spike.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), vec);
+                const scaleLen = idx < 6 ? 1.05 : 0.72;
+                spike.scale.set(0.9, scaleLen, 0.9);
+                starGroup.add(spike);
+            });
+
+            // Center metallic core
+            const starCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 1), violetChromeMaterial);
+            starGroup.add(starCore);
+            scene.add(starGroup);
+
+            // --- B. BOTTOM-RIGHT LIQUID CHROME ORGANIC SCULPTURE ---
+            const bottomSculptureGeo = new THREE.TorusKnotGeometry(2.35, 0.56, 160, 28, 2, 3);
+            const bottomSculpture = new THREE.Mesh(bottomSculptureGeo, chromeMaterial);
+            scene.add(bottomSculpture);
+
+            // --- C. TOP-LEFT LIQUID CHROME RIBBON SCULPTURE ---
+            const topSculptureGeo = new THREE.TorusKnotGeometry(1.75, 0.24, 140, 20, 3, 2);
+            const topSculpture = new THREE.Mesh(topSculptureGeo, violetChromeMaterial);
+            scene.add(topSculpture);
+
+            // Responsive Positioning for Desktop vs Mobile
+            function updatePositions() {
+                const w = canvas.parentElement.clientWidth;
+                const h = canvas.parentElement.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h, false);
+
+                const isMobile = w < 768;
+                if (isMobile) {
+                    starGroup.position.set(2.1, 2.3, -1.5);
+                    starGroup.scale.setScalar(0.58);
+                    bottomSculpture.position.set(3.2, -3.8, -1.2);
+                    bottomSculpture.scale.setScalar(0.75);
+                    topSculpture.position.set(-2.8, 4.2, -1.5);
+                    topSculpture.scale.setScalar(0.72);
+                } else {
+                    starGroup.position.set(2.75, 1.45, 0);
+                    starGroup.scale.setScalar(0.88);
+                    bottomSculpture.position.set(5.4, -3.1, 0.8);
+                    bottomSculpture.scale.setScalar(1.25);
+                    topSculpture.position.set(-5.8, 3.85, 0.2);
+                    topSculpture.scale.setScalar(1.1);
+                }
+            }
+
+            updatePositions();
+            window.addEventListener('resize', updatePositions);
+
+            // Subtle Mouse Parallax
+            let mouseX = 0, mouseY = 0;
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            // Smooth Animation Loop
+            const clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate);
+                const t = clock.getElapsedTime();
+
+                // Spiky Star gentle orbit & spin
+                starGroup.rotation.y = t * 0.35 + mouseX * 0.4;
+                starGroup.rotation.x = Math.sin(t * 0.5) * 0.25 + mouseY * 0.3;
+                starGroup.rotation.z = t * 0.12;
+
+                // Liquid Chrome Sculptures slow organic float
+                bottomSculpture.rotation.x = t * 0.14 + mouseY * 0.15;
+                bottomSculpture.rotation.y = t * 0.18 + mouseX * 0.15;
+
+                topSculpture.rotation.x = -t * 0.16;
+                topSculpture.rotation.y = t * 0.22;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        /* =========================================================
+           1B. EXACT BACKGROUND IMAGE LOADER + SPRING JIGGLE PHYSICS
+               (Displays your exact unedited image with gentle jiggle)
+           ========================================================= */
+        function initHeroBgArtJiggle() {
+            const wrapper = document.getElementById('hero-bg-art-wrapper');
+            const img = document.getElementById('hero-bg-art-img');
+            const input = document.getElementById('bg-art-input');
+            const label = document.getElementById('bg-art-btn-label');
+            const dot = document.getElementById('bg-art-dot');
+            if (!wrapper || !img || !input) return;
+
+            // Hide broken image placeholder if sandbox cannot serve local filename directly
+            img.addEventListener('error', () => {
+                img.style.display = 'none';
+                if (label) label.textContent = 'Load BG Art';
+                if (dot) dot.classList.add('animate-pulse');
+            });
+
+            img.addEventListener('load', () => {
+                img.style.display = 'block';
+                if (label) label.textContent = 'BG Art ✓';
+                if (dot) {
+                    dot.classList.remove('animate-pulse');
+                    dot.classList.replace('bg-lavender', 'bg-emerald-400');
+                }
+            });
+
+            // Instant unedited image upload for the live preview
+            input.addEventListener('change', (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const objectUrl = URL.createObjectURL(file);
+                img.src = objectUrl;
+                showToast('Exact background image loaded with jiggle motion!', 'success');
+            });
+
+            // Subtle interactive spring jiggle on pointer movement
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+            let velX = 0, velY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth - 0.5) * 18;
+                targetY = (e.clientY / window.innerHeight - 0.5) * 14;
+            });
+
+            function animateSpringJiggle() {
+                requestAnimationFrame(animateSpringJiggle);
+                const stiffness = 0.08;
+                const damping = 0.82;
+
+                velX = (velX + (targetX - currentX) * stiffness) * damping;
+                velY = (velY + (targetY - currentY) * stiffness) * damping;
+                currentX += velX;
+                currentY += velY;
+
+                wrapper.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+            }
+            animateSpringJiggle();
+        }
+
+        /* =========================================================
+           2. VOICE ROSTER, PRESETS & UI STATE
+           ========================================================= */
+        const VOICE_ROSTER = [
+            { id: 'Sadachbia', name: 'Sadachbia', tag: 'Viral Shorts', desc: 'Fast-paced, scroll-stopping energy built for viral YouTube Shorts, Reels & TikTok hooks.', style: 'viral_shorts', pacing: '3', expressiveness: 95 },
+            { id: 'Laomedeia', name: 'Laomedeia', tag: 'Reels Hype', desc: 'Punchy, entertaining storytelling cadence designed to maximize viewer retention.', style: 'viral_shorts', pacing: '3', expressiveness: 90 },
+            { id: 'Zephyr', name: 'Zephyr', tag: 'Futuristic', desc: 'Bright, crystal-clear tone ideal for tech launches & AI interfaces.', style: 'cyberpunk', pacing: '2', expressiveness: 75 },
+            { id: 'Fenrir', name: 'Fenrir', tag: 'Cinematic', desc: 'Deep, powerful resonance built for trailers and epic storytelling.', style: 'cinematic', pacing: '1', expressiveness: 85 },
+            { id: 'Kore', name: 'Kore', tag: 'Narration', desc: 'Firm, poised studio delivery for explainers and audiobooks.', style: 'natural', pacing: '2', expressiveness: 65 },
+            { id: 'Puck', name: 'Puck', tag: 'Upbeat', desc: 'Energetic, charismatic voice tailored for YouTube and podcasts.', style: 'energetic', pacing: '3', expressiveness: 88 },
+            { id: 'Charon', name: 'Charon', tag: 'Documentary', desc: 'Authoritative, informative cadence for journalism & history.', style: 'documentary', pacing: '2', expressiveness: 60 },
+            { id: 'Aoede', name: 'Aoede', tag: 'Commercial', desc: 'Breezy, stylish warmth for luxury brands and modern ads.', style: 'natural', pacing: '2', expressiveness: 75 }
+        ];
+
+        const VOICE_TYPE_PRESETS = {
+            viral_shorts: {
+                label: 'Viral Shorts & Reels',
+                voice: 'Sadachbia',
+                style: 'viral_shorts',
+                pacing: '3',
+                expressiveness: 95,
+                scriptKey: 'viral_shorts'
+            },
+            cinematic: {
+                label: 'Cinema Trailer',
+                voice: 'Algenib',
+                style: 'cinematic',
+                pacing: '1',
+                expressiveness: 85,
+                scriptKey: 'trailer'
+            },
+            podcast: {
+                label: 'Creator Host',
+                voice: 'Puck',
+                style: 'energetic',
+                pacing: '2',
+                expressiveness: 85,
+                scriptKey: 'podcast'
+            },
+            luxury: {
+                label: 'Luxury Ad',
+                voice: 'Aoede',
+                style: 'natural',
+                pacing: '2',
+                expressiveness: 70,
+                scriptKey: 'luxury'
+            },
+            documentary: {
+                label: 'Documentary',
+                voice: 'Charon',
+                style: 'documentary',
+                pacing: '2',
+                expressiveness: 60,
+                scriptKey: 'trailer'
+            },
+            cyberpunk: {
+                label: 'Cyber AI',
+                voice: 'Zephyr',
+                style: 'cyberpunk',
+                pacing: '2',
+                expressiveness: 75,
+                scriptKey: 'cyberpunk'
+            }
+        };
+
+        const SAMPLE_SCRIPTS = {
+            viral_shorts: "Stop scrolling! Did you know 90% of viral videos win or lose their audience in the first 1.5 seconds? Here's the exact vocal hack top creators use to lock in viewers until the very last frame!",
+            trailer: "In a world where silence reigned... one signal changed everything. Welcome to ZEDCraft Studio. Experience voices sculpted beyond reality.",
+            luxury: "Precision isn't just seen. It's heard. Introducing the new Obsidian Series — engineered for those who live ahead of time.",
+            podcast: "What's up creators! You're tuned into Future Frequency, where we break down the tools shaping tomorrow's digital culture. Let's dive right in!",
+            cyberpunk: "Neural link established. Acoustic matrix calibrated to ninety-nine point nine percent fidelity. ZEDCraft Studio is online and ready for your command.",
+            dialogue: "Alex: Wait, did you actually record that narration in a studio?\nMaya: Not even close! I typed the script into ZEDCraft Studio ten seconds ago and generated it live.\nAlex: That's unreal. The emotion sounds completely human."
+        };
+
+        let currentStudioMode = 'single'; // 'single' | 'dialogue'
+        let currentAudioUrl = null;
+        let currentFileName = 'zedcraft_voiceover.wav';
+        let sessionHistory = [];
+
+        // Web Audio API Visualizer State
+        let audioCtx = null;
+        let analyser = null;
+        let sourceNode = null;
+        let visualizerFrameId = null;
+
+        // Render Voice Library Cards
+        function renderVoiceCards() {
+            const grid = document.getElementById('voice-cards-grid');
+            if (!grid) return;
+            grid.innerHTML = VOICE_ROSTER.map(v => `
+                <div class="cyber-glass rounded-2xl p-5 flex flex-col justify-between gap-4 hover:border-lavender/60 transition-all group">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500/30 to-white/10 border border-white/15 flex items-center justify-center font-display text-sm font-bold text-lavender">
+                                ${v.name.slice(0, 2).toUpperCase()}
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-tech tracking-wider uppercase bg-white/5 border border-white/10 text-white/70">
+                                ${v.tag}
+                            </span>
+                        </div>
+                        <h3 class="font-display text-base font-bold text-white mb-1">${v.name}</h3>
+                        <p class="text-xs text-white/55 leading-relaxed">${v.desc}</p>
+                    </div>
+                    <button onclick="selectVoiceFromLibrary('${v.id}', '${v.style}')" class="w-full py-2.5 rounded-xl border border-white/15 group-hover:border-lavender/70 group-hover:bg-purple-500/15 text-[11px] font-tech tracking-[0.16em] uppercase text-white/85 transition-all flex items-center justify-center gap-2">
+                        <span>Load in Studio</span>
+                        <span>↗</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function selectVoiceFromLibrary(voiceId, style) {
+            switchStudioMode('single');
+            document.getElementById('voice-select').value = voiceId;
+            document.getElementById('style-select').value = style;
+            const voiceObj = VOICE_ROSTER.find(v => v.id === voiceId);
+            if (voiceObj) {
+                document.getElementById('pacing-slider').value = voiceObj.pacing || '2';
+                updatePacingLabel(voiceObj.pacing || '2');
+                document.getElementById('expressiveness-slider').value = voiceObj.expressiveness || 75;
+                document.getElementById('expressiveness-val').textContent = (voiceObj.expressiveness || 75) + '%';
+            }
+            document.getElementById('studio').scrollIntoView({ behavior: 'smooth' });
+            showToast(`Loaded ${voiceId} (${style.replace('_', ' ')}) into ZEDCraft Studio`, 'success');
+        }
+
+        function selectVoiceType(typeKey) {
+            const preset = VOICE_TYPE_PRESETS[typeKey];
+            if (!preset) return;
+
+            switchStudioMode('single');
+            document.getElementById('voice-select').value = preset.voice;
+            document.getElementById('style-select').value = preset.style;
+            document.getElementById('pacing-slider').value = preset.pacing;
+            updatePacingLabel(preset.pacing);
+            document.getElementById('expressiveness-slider').value = preset.expressiveness;
+            document.getElementById('expressiveness-val').textContent = preset.expressiveness + '%';
+
+            // Load matching sample hook/script
+            if (preset.scriptKey) {
+                loadSampleScript(preset.scriptKey);
+            }
+
+            // Highlight active voice type card
+            document.querySelectorAll('.voice-type-card').forEach(card => {
+                if (card.dataset.voiceType === typeKey) {
+                    card.classList.add('border-lavender/70', 'bg-purple-500/15');
+                } else {
+                    card.classList.remove('border-lavender/70', 'bg-purple-500/15');
+                }
+            });
+
+            showToast(`${preset.label} preset active — Voice: ${preset.voice}`, 'success');
+        }
+
+        function applyQuickPreset(preset) {
+            if (preset === 'trailer') {
+                switchStudioMode('single');
+                document.getElementById('voice-select').value = 'Algenib';
+                document.getElementById('style-select').value = 'cinematic';
+                loadSampleScript('trailer');
+            } else if (preset === 'cyberpunk') {
+                switchStudioMode('single');
+                document.getElementById('voice-select').value = 'Zephyr';
+                document.getElementById('style-select').value = 'cyberpunk';
+                loadSampleScript('cyberpunk');
+            } else if (preset === 'luxury') {
+                switchStudioMode('single');
+                document.getElementById('voice-select').value = 'Aoede';
+                document.getElementById('style-select').value = 'natural';
+                loadSampleScript('luxury');
+            } else if (preset === 'podcast') {
+                switchStudioMode('dialogue');
+                loadSampleScript('dialogue');
+            }
+            document.getElementById('studio').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchStudioMode(mode) {
+            currentStudioMode = mode;
+            const singleBtn = document.getElementById('mode-single-btn');
+            const dialogueBtn = document.getElementById('mode-dialogue-btn');
+            const singleControls = document.getElementById('single-voice-controls');
+            const dialogueControls = document.getElementById('dialogue-voice-controls');
+            const dialogueHint = document.getElementById('dialogue-hint');
+            const singleHint = document.getElementById('single-hint');
+
+            if (mode === 'single') {
+                singleBtn.className = 'px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all bg-white text-obsidian font-semibold';
+                dialogueBtn.className = 'px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all text-white/70 hover:text-white';
+                singleControls.classList.remove('hidden');
+                dialogueControls.classList.add('hidden');
+                dialogueHint.classList.add('hidden');
+                singleHint.classList.remove('hidden');
+            } else {
+                dialogueBtn.className = 'px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all bg-white text-obsidian font-semibold';
+                singleBtn.className = 'px-5 py-2.5 rounded-lg text-xs font-tech tracking-[0.14em] uppercase transition-all text-white/70 hover:text-white';
+                singleControls.classList.add('hidden');
+                dialogueControls.classList.remove('hidden');
+                dialogueHint.classList.remove('hidden');
+                singleHint.classList.add('hidden');
+            }
+        }
+
+        function loadSampleScript(key) {
+            const textarea = document.getElementById('voice-script');
+            if (key === 'dialogue') {
+                switchStudioMode('dialogue');
+            }
+            textarea.value = SAMPLE_SCRIPTS[key] || '';
+            updateCharCount();
+        }
+
+        function clearScript() {
+            const textarea = document.getElementById('voice-script');
+            textarea.value = '';
+            updateCharCount();
+            textarea.focus();
+        }
+
+        function updateCharCount() {
+            const textarea = document.getElementById('voice-script');
+            document.getElementById('char-count').textContent = textarea.value.length;
+        }
+
+        function updatePacingLabel(val) {
+            const labels = { '1': 'Slow & Deliberate', '2': 'Normal', '3': 'Fast & Dynamic' };
+            document.getElementById('pacing-val').textContent = labels[val] || 'Normal';
+        }
+
+        /* =========================================================
+           3. GEMINI TTS API ENGINE + PCM-TO-WAV CONVERTER
+           ========================================================= */
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const numChannels = 1;
+            const bitsPerSample = 16;
+            const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+            const blockAlign = numChannels * (bitsPerSample / 8);
+            const dataSize = pcm16.length * 2;
+            const buffer = new ArrayBuffer(44 + dataSize);
+            const view = new DataView(buffer);
+
+            function writeString(offset, str) {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset + i, str.charCodeAt(i));
+                }
+            }
+
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + dataSize, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true); // PCM chunk size
+            view.setUint16(20, 1, true);  // Audio format: PCM
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, byteRate, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitsPerSample, true);
+            writeString(36, 'data');
+            view.setUint32(40, dataSize, true);
+
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16[i], true);
+            }
+
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        // Fetch with Exponential Backoff (1s, 2s, 4s)
+        async function fetchWithBackoff(url, options, maxRetries = 3) {
+            let delay = 1000;
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                const response = await fetch(url, options);
+                if (response.ok) return response;
+                if (attempt === maxRetries || (response.status !== 429 && response.status < 500)) {
+                    throw new Error(`API Error (${response.status})`);
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+        }
+
+        function buildDeliveryInstruction() {
+            const style = document.getElementById('style-select').value;
+            const pacingVal = document.getElementById('pacing-slider').value;
+            const expr = parseInt(document.getElementById('expressiveness-slider').value, 10);
+
+            const styleMap = {
+                viral_shorts: 'in a fast-paced, punchy, super entertaining viral YouTube Shorts and Instagram Reels hook style with crisp emphasis and high-retention excitement',
+                natural: 'in a clear, studio-quality natural tone',
+                cinematic: 'in a dramatic, deep, cinematic movie-trailer voice',
+                energetic: 'in an upbeat, exciting, high-energy commercial voice',
+                whisper: 'in a soft, intimate, breathy whisper',
+                documentary: 'in a calm, authoritative documentary narrator tone',
+                cyberpunk: 'in a sleek, crisp, confident futuristic voice'
+            };
+
+            const pacingMap = {
+                '1': 'at a slow, deliberate pace',
+                '2': 'at a natural conversational pace',
+                '3': 'at a brisk, dynamic pace'
+            };
+
+            const exprNote = expr >= 75 ? 'with rich emotional expressiveness' : expr <= 35 ? 'with calm, restrained neutrality' : 'with balanced expression';
+            return `${styleMap[style] || styleMap.natural}, ${pacingMap[pacingVal] || pacingMap['2']}, ${exprNote}`;
+        }
+
+        async function generateVoiceover() {
+            const script = document.getElementById('voice-script').value.trim();
+            if (!script) {
+                showToast('Please enter a script before generating audio.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('generate-btn');
+            const btnText = document.getElementById('gen-btn-text');
+            const icon = document.getElementById('gen-icon');
+            const spinner = document.getElementById('gen-spinner');
+
+            btn.disabled = true;
+            icon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            btnText.textContent = 'Synthesizing...';
+
+            try {
+                const apiKey = ""; // Provided automatically at runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+                const deliveryGuide = buildDeliveryInstruction();
+
+                let payload;
+                let voiceLabel = '';
+
+                if (currentStudioMode === 'single') {
+                    const selectedVoice = document.getElementById('voice-select').value;
+                    voiceLabel = selectedVoice;
+                    payload = {
+                        contents: [{
+                            parts: [{ text: `Say ${deliveryGuide}: ${script}` }]
+                        }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                voiceConfig: {
+                                    prebuiltVoiceConfig: { voiceName: selectedVoice }
+                                }
+                            }
+                        },
+                        model: "gemini-2.5-flash-preview-tts"
+                    };
+                } else {
+                    const spk1 = document.getElementById('speaker1-select').value;
+                    const spk2 = document.getElementById('speaker2-select').value;
+                    voiceLabel = `${spk1} & ${spk2}`;
+                    payload = {
+                        contents: [{
+                            parts: [{ text: `TTS the following conversation between Alex and Maya ${deliveryGuide}:\n${script}` }]
+                        }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                multiSpeakerVoiceConfig: {
+                                    speakerVoiceConfigs: [
+                                        { speaker: "Alex", voiceConfig: { prebuiltVoiceConfig: { voiceName: spk1 } } },
+                                        { speaker: "Maya", voiceConfig: { prebuiltVoiceConfig: { voiceName: spk2 } } }
+                                    ]
+                                }
+                            }
+                        },
+                        model: "gemini-2.5-flash-preview-tts"
+                    };
+                }
+
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (!audioData || !mimeType || !mimeType.startsWith("audio/")) {
+                    throw new Error("No audio stream returned from synthesis engine.");
+                }
+
+                const rateMatch = mimeType.match(/rate=(\d+)/);
+                const sampleRate = rateMatch ? parseInt(rateMatch[1], 10) : 24000;
+                const pcmBuffer = base64ToArrayBuffer(audioData);
+                const pcm16 = new Int16Array(pcmBuffer);
+                const wavBlob = pcmToWav(pcm16, sampleRate);
+                const audioUrl = URL.createObjectURL(wavBlob);
+
+                const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const takeObj = {
+                    id: Date.now(),
+                    url: audioUrl,
+                    voice: voiceLabel,
+                    snippet: script.slice(0, 48) + (script.length > 48 ? '...' : ''),
+                    time: timestamp,
+                    fileName: `ZEDCraft_${voiceLabel.replace(/\s+/g, '_')}_${Date.now()}.wav`
+                };
+
+                sessionHistory.unshift(takeObj);
+                renderHistory();
+                loadAudioIntoPlayer(takeObj, true);
+                showToast(`Voiceover synthesized with ${voiceLabel}!`, 'success');
+
+            } catch (err) {
+                console.error(err);
+                showToast('Synthesis failed. Please verify your script and try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                icon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+                btnText.textContent = 'Generate Voiceover';
+            }
+        }
+
+        /* =========================================================
+           4. AUDIO PLAYER, LIVE VISUALIZER & HISTORY
+           ========================================================= */
+        const audioEl = document.getElementById('studio-audio');
+        const seekBar = document.getElementById('audio-seek');
+        const playBtn = document.getElementById('play-pause-btn');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+        const dlBtn = document.getElementById('download-wav-btn');
+
+        function loadAudioIntoPlayer(take, autoPlay = false) {
+            currentAudioUrl = take.url;
+            currentFileName = take.fileName;
+            audioEl.src = take.url;
+            audioEl.playbackRate = parseFloat(document.getElementById('playback-speed').value);
+
+            document.getElementById('output-voice-badge').textContent = take.voice;
+            document.getElementById('visualizer-placeholder').classList.add('hidden');
+            playBtn.disabled = false;
+            seekBar.disabled = false;
+            dlBtn.disabled = false;
+
+            if (autoPlay) {
+                setupVisualizer();
+                audioEl.play().catch(() => {});
+            }
+        }
+
+        function setupVisualizer() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContextClass();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 128;
+                sourceNode = audioCtx.createMediaElementSource(audioEl);
+                sourceNode.connect(analyser);
+                analyser.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            drawVisualizer();
+        }
+
+        function drawVisualizer() {
+            const canvas = document.getElementById('visualizer-canvas');
+            if (!canvas || !analyser) return;
+            const ctx = canvas.getContext('2d');
+
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+            }
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            if (visualizerFrameId) cancelAnimationFrame(visualizerFrameId);
+
+            function renderFrame() {
+                visualizerFrameId = requestAnimationFrame(renderFrame);
+                analyser.getByteFrequencyData(dataArray);
+
+                const w = canvas.width;
+                const h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                // Center baseline
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.lineWidth = 1 * dpr;
+                ctx.beginPath();
+                ctx.moveTo(0, h / 2);
+                ctx.lineTo(w, h / 2);
+                ctx.stroke();
+
+                const barCount = 48;
+                const gap = 4 * dpr;
+                const barWidth = (w - gap * (barCount - 1)) / barCount;
+
+                for (let i = 0; i < barCount; i++) {
+                    const val = dataArray[i] / 255;
+                    const barHeight = Math.max(4 * dpr, val * (h * 0.82));
+                    const x = i * (barWidth + gap);
+                    const y = (h - barHeight) / 2;
+
+                    const grad = ctx.createLinearGradient(0, y, 0, y + barHeight);
+                    grad.addColorStop(0, '#ffffff');
+                    grad.addColorStop(0.45, '#c09eff');
+                    grad.addColorStop(1, '#7e22ce');
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, barWidth, barHeight, 4 * dpr);
+                    ctx.fill();
+                }
+            }
+            renderFrame();
+        }
+
+        function togglePlayPause() {
+            if (!currentAudioUrl) return;
+            setupVisualizer();
+            if (audioEl.paused) {
+                audioEl.play();
+            } else {
+                audioEl.pause();
+            }
+        }
+
+        function updatePlaybackSpeed() {
+            audioEl.playbackRate = parseFloat(document.getElementById('playback-speed').value);
+        }
+
+        function downloadCurrentAudio() {
+            if (!currentAudioUrl) return;
+            const a = document.createElement('a');
+            a.href = currentAudioUrl;
+            a.download = currentFileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast('Downloading 24kHz WAV master file...', 'info');
+        }
+
+        function formatTime(sec) {
+            if (isNaN(sec) || !isFinite(sec)) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        audioEl.addEventListener('play', () => {
+            iconPlay.classList.add('hidden');
+            iconPause.classList.remove('hidden');
+        });
+        audioEl.addEventListener('pause', () => {
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+        });
+        audioEl.addEventListener('ended', () => {
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+        });
+        audioEl.addEventListener('timeupdate', () => {
+            if (audioEl.duration) {
+                seekBar.value = (audioEl.currentTime / audioEl.duration) * 100;
+                document.getElementById('time-current').textContent = formatTime(audioEl.currentTime);
+                document.getElementById('time-duration').textContent = formatTime(audioEl.duration);
+            }
+        });
+        seekBar.addEventListener('input', () => {
+            if (audioEl.duration) {
+                audioEl.currentTime = (seekBar.value / 100) * audioEl.duration;
+            }
+        });
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            document.getElementById('history-count').textContent = `${sessionHistory.length} ${sessionHistory.length === 1 ? 'Take' : 'Takes'}`;
+
+            if (sessionHistory.length === 0) return;
+
+            list.innerHTML = sessionHistory.map((item, idx) => `
+                <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-lavender/50 transition-all">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2 text-[11px] font-tech text-lavender">
+                            <span class="font-semibold">${item.voice}</span>
+                            <span class="text-white/30">•</span>
+                            <span class="text-white/45">${item.time}</span>
+                        </div>
+                        <p class="text-xs text-white/75 truncate mt-0.5">${item.snippet}</p>
+                    </div>
+                    <button onclick="replayHistoryTake(${idx})" title="Play Take" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white hover:text-obsidian flex items-center justify-center shrink-0 transition-all">
+                        <svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function replayHistoryTake(idx) {
+            const item = sessionHistory[idx];
+            if (item) {
+                loadAudioIntoPlayer(item, true);
+            }
+        }
+
+        /* =========================================================
+           5. CUSTOM TOAST NOTIFICATIONS (NO ALERT)
+           ========================================================= */
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const borderCol = type === 'error' ? 'border-rose-500/60' : type === 'success' ? 'border-lavender/70' : 'border-white/25';
+            const dotCol = type === 'error' ? 'bg-rose-400' : type === 'success' ? 'bg-emerald-400' : 'bg-lavender';
+
+            toast.className = `pointer-events-auto cyber-glass-strong ${borderCol} rounded-xl px-4 py-3 text-xs text-white shadow-2xl flex items-center gap-3 transform translate-y-4 opacity-0 transition-all duration-300`;
+            toast.innerHTML = `
+                <span class="w-2 h-2 rounded-full ${dotCol} shrink-0"></span>
+                <span class="leading-snug">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3800);
+        }
+
+        /* =========================================================
+           6. INITIALIZATION ON WINDOW LOAD
+           ========================================================= */
+        window.onload = function () {
+            initHero3DScene();
+            initHeroBgArtJiggle();
+            renderVoiceCards();
+            updateCharCount();
+            document.getElementById('voice-script').addEventListener('input', updateCharCount);
+        };
+    </script>
+</body>
+</html>
